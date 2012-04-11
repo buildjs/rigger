@@ -1,1 +1,1 @@
-//= noincludes.coffee
+//= ../input/noincludes.coffee
