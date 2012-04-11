@@ -1,0 +1,36 @@
+{
+  "name": "rig",
+  "description": "Javascript file parser and include engine",
+  "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
+  "tags": [ "build" ],
+  "version": "0.0.1",
+  "main": "./lib/rig.js",
+  
+  "engines": {
+    "node": ">= 0.4.x < 0.7.0"
+  },
+  
+  "dependencies": {
+    "async": "0.1.x",
+    "debug": "*",
+    "getit": "0.1.x"
+  },
+  "devDependencies": {
+    "expect.js": "0.1.x",
+    "mocha": "*"
+  },
+  
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DamonOehlman/rig.git"
+  },
+  "bugs": {
+    "url": "http://github.com/DamonOehlman/rig/issues"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec -t 3000",
+    "doc": "rm -r docs/_build && sphinx-build docs docs/_build"
+  },
+  "contributors": [],
+  "optionalDependencies": {}
+}
