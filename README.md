@@ -13,7 +13,7 @@ The simplest way to use Rigger is through the `readFile` call:
 ```js
 var rigger = require('rigger');
 
-rigger.readFile('src/input.js', function(err, output) {
+rigger('src/input.js', function(err, output) {
     // if something goes wrong during the reading or rigging err will be non-null
     
     // otherwise, your rigged content will be available in the output string
@@ -26,7 +26,7 @@ As described below, Rigger supports node streams, so you can also omit the callb
 var fs = require('fs'),
     rigger = require('rigger');
 
-rigger.readFile('src/input.js').pipe(fs.createWriteStream('dist/output.js));
+rigger('src/input.js').pipe(fs.createWriteStream('dist/output.js));
 ```
 
 If you want to do something other than read a local file, then simply create a new `Rigger` instance and pipe input into it:
