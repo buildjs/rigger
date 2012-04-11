@@ -1,8 +1,27 @@
 # Rigger
 
-Rigger is the parser and include engine that is used in both [Interleave](https://github.com/DamonOehlman/interleave) and [bake-js](https://github.com/DamonOehlman/bake-js).
+Rigger is a build time include engine for Javascript, CSS, CoffeeScript and in general any type of text file that you wish to might want to "include" other files into.
 
 <a href="http://travis-ci.org/#!/DamonOehlman/rigger"><img src="https://secure.travis-ci.org/DamonOehlman/rigger.png" alt="Build Status"></a>
+
+It was created to make the process of creating Javascript libraries a more structured process, but can be used for other tasks also. 
+
+As a developer you are encouraged to write modular, reusable code but when it comes to writing client-side applications your ability to do this effectively is generally hampered by what I call the _single-file principle_.  In most cases a good programmer rages against this and implements some kind of custom `Makefile`, [ant build](http://ant.apache.org/) or [Rakefile](http://rake.rubyforge.org/) to help with their build.
+
+The "build" process, however, generally involves taking a number of files and concatenating them together in a sensible order.  I, however, wanted something more flexible.  To be precise, I wanted the following:
+
+- The ability to inject a file into specific line in another file.
+- The ability to reuse code from other libraries.
+- The ability to do includes from the web (namely github repos)
+
+This is the functionality that Rigger provides.  It was originally built 6 months ago as part of [Interleave](/DamonOehlman/interleave) but has it's own identity, tests and is generally better.
+
+## Using Rigger
+
+Unlike Interleave, Rigger is a not a command-line tool in it's own right, rather it is meant to be integrated into other JS build tools or perhaps just a simple [Jakefile](https://github.com/mde/jake).
+
+--- 
+
 
 It has been extracted from Interleave and rewritten to improve module focus and test coverage.
 
