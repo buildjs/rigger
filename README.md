@@ -47,4 +47,22 @@ One of the simplest ways of composing process flows in node is to use streams, a
 
 This means that you can do all kinds of things prior to rigging in your inline dependencies and all kinds of things afterwards to.
 
+## Extra Sourcey
 
+With a solid test suite in place, it also made it possible to add some of the extra include types that were missing from interleave.
+
+### Directory Includes
+
+Simply specify a directory in the include string and all files of the same type as the currently parsed file will be included.  In the tests/input directory have a look for the `local-includedir.js` and `local-includedir.css` files.
+
+```js
+//= ../includes/testdir
+```
+
+### Cherrypick Include
+
+In some instances you may want to cherrypick particular files from a directory / remote repository.  Rather than typing multiple include lines, you can simply type one statement and use square brackets to signal to Rigger that you want to include multiple files:
+
+```js
+// ../includes/testdir[a, b]
+```
