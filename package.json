@@ -28,7 +28,7 @@
     "url": "http://github.com/DamonOehlman/rigger/issues"
   },
   "scripts": {
-    "test": "mocha --reporter spec -t 5000"
+    "test": "mocha --reporter spec -t 10000"
   },
   "contributors": [],
   "optionalDependencies": {}
