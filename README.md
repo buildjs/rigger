@@ -18,6 +18,35 @@ This is the functionality that Rigger provides.  It was originally built 6 month
 
 ## Using Rigger
 
+To get starting using rigger, you simply start placing special __include comments__ in a file that you want rigger to process.
+
+Javascript:
+
+```js
+//= includes/test
+```
+
+CoffeeScript:
+
+```coffee
+#= includes/test
+```
+
+CSS:
+
+```css
+/*= includes/test */
+```
+
+Notice that each of the examples is using single-line comments (even if they are a block comment in the case of the CSS example).  This is important to note as Rigger parses files on a __line by line__ basis rather through through tokenizing.  If you use block comments like the following CSS example, it won't work:
+
+```css
+/*=
+includes/test1
+includes/test2
+*/
+```
+
 Unlike Interleave, Rigger is a not a command-line tool in it's own right, rather it is meant to be integrated into other JS build tools or perhaps just a simple [Jakefile](https://github.com/mde/jake).
 
 --- 
