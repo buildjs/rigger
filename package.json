@@ -2,14 +2,14 @@
   "name": "rigger",
   "description": "Javascript file parser and include engine",
   "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
-  "tags": [ "build" ],
-  "version": "0.0.0",
+  "tags": [
+    "build"
+  ],
+  "version": "0.1.0",
   "main": "./lib/rigger.js",
-  
   "engines": {
     "node": ">= 0.4.x < 0.7.0"
   },
-  
   "dependencies": {
     "async": "0.1.x",
     "debug": "*",
@@ -19,7 +19,6 @@
     "expect.js": "0.1.x",
     "mocha": "*"
   },
-  
   "repository": {
     "type": "git",
     "url": "git://github.com/DamonOehlman/rigger.git"
