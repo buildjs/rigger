@@ -22,7 +22,7 @@ rigger.readFile('src/input.js', function(err, output) {
 
 As described below, Rigger supports node streams, so you can also omit the callback from the `readFile` call and pipe the output to a writable stream:
 
-```
+```js
 var fs = require('fs'),
     rigger = require('rigger');
 
@@ -31,7 +31,7 @@ rigger.readFile('src/input.js').pipe(fs.createWriteStream('dist/output.js));
 
 If you want to do something other than read a local file, then simply create a new `Rigger` instance and pipe input into it:
 
-```
+```js
 var fs = require('fs'),
     Rigger = require('rigger').Rigger;
 
