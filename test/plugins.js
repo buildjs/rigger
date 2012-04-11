@@ -2,7 +2,7 @@ var expect = require('expect.js'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
-    inputPath = path.resolve(__dirname, 'input'),
+    inputPath = path.resolve(__dirname, 'input-plugins'),
     outputPath = path.resolve(__dirname, 'output');
 
 // run tests for each of the input files
