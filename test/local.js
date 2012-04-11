@@ -8,6 +8,8 @@ var expect = require('expect.js'),
 // run tests for each of the input files
 fs.readdir(inputPath, function(err, files) {
     describe('local rigging tests', function() {
+        
+        // create a test for each of the input files
         (files || []).forEach(function(file) {
             it('should be able to parse: ' + file, function(done) {
                 // read the output file

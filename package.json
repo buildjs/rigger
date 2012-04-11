@@ -28,8 +28,7 @@
     "url": "http://github.com/DamonOehlman/rigger/issues"
   },
   "scripts": {
-    "test": "mocha --reporter spec -t 3000",
-    "doc": "rm -r docs/_build && sphinx-build docs docs/_build"
+    "test": "mocha --reporter spec -t 5000"
   },
   "contributors": [],
   "optionalDependencies": {}
