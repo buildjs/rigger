@@ -1,10 +1,10 @@
 {
-  "name": "rig",
+  "name": "rigger",
   "description": "Javascript file parser and include engine",
   "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
   "tags": [ "build" ],
-  "version": "0.0.1",
-  "main": "./lib/rig.js",
+  "version": "0.0.0",
+  "main": "./lib/rigger.js",
   
   "engines": {
     "node": ">= 0.4.x < 0.7.0"
@@ -22,10 +22,10 @@
   
   "repository": {
     "type": "git",
-    "url": "git://github.com/DamonOehlman/rig.git"
+    "url": "git://github.com/DamonOehlman/rigger.git"
   },
   "bugs": {
-    "url": "http://github.com/DamonOehlman/rig/issues"
+    "url": "http://github.com/DamonOehlman/rigger/issues"
   },
   "scripts": {
     "test": "mocha --reporter spec -t 3000",
