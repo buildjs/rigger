@@ -61,10 +61,10 @@ Rigger supports a number of special include formats, and these are demonstrated 
 
 Remote resources are those stored accessible via HTTP (or HTTPS).  
 
-___HTTP(S) Include:__
+__HTTP(S) Include:__
 
 ```js
-// include jquery from the CDN so you can run offline perhaps?
+// include jquery from the CDN so you can run offline perhaps...
 //= http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js
 ```
 
