@@ -71,7 +71,7 @@ __HTTP(S) Include:__
 __Github Include:__
 
 ```js
-github://DamonOehlman/alignit/alignit.js
+//= github://DamonOehlman/alignit/alignit.js
 ```
 
 ### Multiple File Include
