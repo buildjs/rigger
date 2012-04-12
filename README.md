@@ -91,8 +91,14 @@ __Cherrypick Include:__
 In some instances you may want to cherrypick particular files from a directory / remote repository.  Rather than typing multiple include lines, you can simply type one statement and use square brackets to signal to Rigger that you want to include multiple files:
 
 ```js
-// ../includes/testdir[a, b]
+//= ../includes/testdir[a, b]
 ```
+
+## Plugin Support
+
+In addition to including files you can also use some plugins to extend the core functionality.  To flag that you want to use a plugin in your core files, use add the word plugin __directly__ after the `=` in the comment (e.g. `//=plugin params`, `/*=plugin params */`, `#=plugin params`, etc).
+
+More soon...
 
 ## Programmatic Use
 
