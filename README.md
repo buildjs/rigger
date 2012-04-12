@@ -53,57 +53,32 @@ Once you have a file that is has been properly rigged, you can use the `rig` com
 rig input.js > output.js
 ```
 
---- 
+## Include All the Things
 
+Rigger supports a number of special include formats, and these are demonstrated in examples below.  While JS examples are provided, the formats will work in any of the known file formats.
 
-It has been extracted from Interleave and rewritten to improve module focus and test coverage.
+### Remote Resources
 
-## Example Usage
+Remote resources are those stored accessible via HTTP (or HTTPS).  
 
-The simplest way to use Rigger is through the `readFile` call:
-
-```js
-var rigger = require('rigger');
-
-rigger('src/input.js', function(err, output) {
-    // if something goes wrong during the reading or rigging err will be non-null
-    
-    // otherwise, your rigged content will be available in the output string
-});
-```
-
-As described below, Rigger supports node streams, so you can also omit the callback from the `readFile` call and pipe the output to a writable stream:
+___HTTP(S) Include:__
 
 ```js
-var fs = require('fs'),
-    rigger = require('rigger');
-
-rigger('src/input.js').pipe(fs.createWriteStream('dist/output.js));
+// include jquery from the CDN so you can run offline perhaps?
+//= http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js
 ```
 
-If you want to do something other than read a local file, then simply create a new `Rigger` instance and pipe input into it:
+__Github Include:__
 
 ```js
-var fs = require('fs'),
-    Rigger = require('rigger').Rigger;
-
-fs.createReadStream('src/input.js').pipe(new Rigger());
+github://DamonOehlman/alignit/alignit.js
 ```
 
-If you use the above approach though, be sure to have a bit of a look through the Rigger source and also take a look at [getit](https://github.com/DamonOehlman/getit) to see what options the `Rigger` constructor accepts to change it and getit's behaviour.
+### Multiple File Include
 
+Being lazy is ok.  Rigger provides some nice shortcuts to help you in your quest:
 
-## Streams FTW!
-
-One of the simplest ways of composing process flows in node is to use streams, and while Interleave does not support a streaming interface, Rigger inherits from the node [Stream](http://nodejs.org/docs/latest/api/stream.html).
-
-This means that you can do all kinds of things prior to rigging in your inline dependencies and all kinds of things afterwards to.
-
-## Extra Sourcey
-
-With a solid test suite in place, it also made it possible to add some of the extra include types that were missing from interleave.
-
-### Directory Includes
+__Directory Includes:__
 
 Simply specify a directory in the include string and all files of the same type as the currently parsed file will be included.  In the tests/input directory have a look for the `local-includedir.js` and `local-includedir.css` files.
 
@@ -111,10 +86,20 @@ Simply specify a directory in the include string and all files of the same type 
 //= ../includes/testdir
 ```
 
-### Cherrypick Include
+__Cherrypick Include:__
 
 In some instances you may want to cherrypick particular files from a directory / remote repository.  Rather than typing multiple include lines, you can simply type one statement and use square brackets to signal to Rigger that you want to include multiple files:
 
 ```js
 // ../includes/testdir[a, b]
 ```
+
+## Programmatic Use
+
+To be completed.
+
+## Streams FTW!
+
+One of the simplest ways of composing process flows in node is to use streams, and while Interleave does not support a streaming interface, Rigger inherits from the node [Stream](http://nodejs.org/docs/latest/api/stream.html).
+
+This means that you can do all kinds of things prior to rigging in your inline dependencies and all kinds of things afterwards to.
