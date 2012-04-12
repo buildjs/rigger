@@ -18,21 +18,21 @@ This is the functionality that Rigger provides.  It was originally built 6 month
 
 ## Using Rigger
 
-To get starting using rigger, you simply start placing special __include comments__ in a file that you want rigger to process.
+First you will want to install it.  You'll need [npm](http://npmjs.org) to do this, once you do you can simply run `npm install -g rigger`. To get starting using rigger, you simply start placing special __include comments__ in a file that you want rigger to process.
 
-Javascript:
+__Javascript:__
 
 ```js
 //= includes/test
 ```
 
-CoffeeScript:
+__CoffeeScript:__
 
 ```coffee
 #= includes/test
 ```
 
-CSS:
+__CSS:__
 
 ```css
 /*= includes/test */
@@ -47,7 +47,11 @@ includes/test2
 */
 ```
 
-Unlike Interleave, Rigger is a not a command-line tool in it's own right, rather it is meant to be integrated into other JS build tools or perhaps just a simple [Jakefile](https://github.com/mde/jake).
+Once you have a file that is has been properly rigged, you can use the `rig` command line tool to turn a rigged file into it's big brother:
+
+```
+rig input.js > output.js
+```
 
 --- 
 

@@ -7,6 +7,10 @@
   ],
   "version": "0.2.2",
   "main": "./lib/rigger.js",
+  "bin": {
+    "rig": "./bin/rig"
+  },
+  
   "engines": {
     "node": ">= 0.4.x < 0.7.0"
   },
