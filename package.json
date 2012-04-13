@@ -33,7 +33,7 @@
     "url": "http://github.com/DamonOehlman/rigger/issues"
   },
   "scripts": {
-    "test": "mocha --reporter spec -t 10000 test/local.js && mocha --reporter spec -t 10000 test/remote.js"
+    "test": "mocha --reporter spec test/local.js && mocha --reporter spec test/manual.js && mocha --reporter spec -t 10000 test/remote.js"
   },
   "contributors": [],
   "optionalDependencies": {}

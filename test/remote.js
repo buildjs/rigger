@@ -11,7 +11,7 @@ fs.readdir(inputPath, function(err, files) {
         
         // create a test for each of the input files
         (files || []).forEach(function(file) {
-            it('should be able to parse: ' + file, function(done) {
+            it('should be able to rig: ' + file, function(done) {
                 // read the output file
                 fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
                     expect(err).to.not.be.ok();
