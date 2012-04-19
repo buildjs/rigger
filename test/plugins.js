@@ -12,16 +12,24 @@ fs.readdir(inputPath, function(err, files) {
         // create a test for each of the input files
         (files || []).forEach(function(file) {
             it('should be able to rig: ' + file, function(done) {
-                // read the output file
-                fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
-                    expect(refErr).to.not.be.ok();
-
-                    rigger(path.join(inputPath, file), 'utf8', function(parseErr, parsed) {
-                        if (! parseErr) {
-                            expect(parsed).to.equal(reference);
-                        }
+                fs.stat(path.join(inputPath, file), function(err, stats) {
+                    // skip directories
+                    if (stats.isDirectory()) {
+                        done();
+                        return;
+                    }
                     
-                        done(parseErr);
+                    // read the output file
+                    fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
+                        expect(refErr).to.not.be.ok();
+
+                        rigger(path.join(inputPath, file), 'utf8', function(parseErr, parsed) {
+                            if (! parseErr) {
+                                expect(parsed).to.equal(reference);
+                            }
+
+                            done(parseErr);
+                        });
                     });
                 });
             });

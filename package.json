@@ -20,10 +20,11 @@
   },
   "devDependencies": {
     "expect.js": "0.1.x",
-    "mocha": "*"
+    "mocha": "*",
+    "coffee-script": "1.3.x",
+    "rigger-collate": "*"
   },
   "optionalDepencies": {
-    "coffee-script": "1.3.x"
   },
   "repository": {
     "type": "git",
