@@ -27,10 +27,9 @@ describe('event tests', function() {
     });
     
     it('it should trigger an include:remote for a remote include', function(done) {
+        rigger.on('include:remote', done);
+        
         rigger.process('//= github://DamonOehlman/snippets/qsa', function(err, output) {
-        })
-        .on('include:remote', function() {
-            done();
         });
     });
 });
