@@ -21,7 +21,7 @@ fs.readdir(inputPath, function(err, files) {
                     var comparison = JSON.parse(content);
                     
                     // read the output file
-                    rigger(path.join(inputPath, file), 'utf8', function(parseErr, parsed, settings) {
+                    rigger(path.join(inputPath, file), function(parseErr, parsed, settings) {
                         expect(settings).to.eql(comparison);
                         
                         done(parseErr);

@@ -16,7 +16,7 @@ fs.readdir(inputPath, function(err, files) {
                 fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
                     expect(err).to.not.be.ok();
 
-                    rigger(path.join(inputPath, file), 'utf8', function(parseErr, parsed) {
+                    rigger(path.join(inputPath, file), function(parseErr, parsed) {
                         expect(parsed).to.equal(reference);
                     
                         done(parseErr);
