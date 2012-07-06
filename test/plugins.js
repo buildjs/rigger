@@ -2,15 +2,24 @@ var expect = require('expect.js'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
+    squirrel = require('squirrel'),
     inputPath = path.resolve(__dirname, 'input-plugins'),
     outputPath = path.resolve(__dirname, 'output'),
     riggerOpts = {
         encoding: 'utf8'
     };
+    
+// override squirrel default functional allowing installation
+squirrel.defaults.allowInstall = true;
 
 // run tests for each of the input files
 fs.readdir(inputPath, function(err, files) {
     describe('local rigging (via plugins) tests', function() {
+        /*
+        after(function(done) {
+            squirrel.rm(['coffee-script', 'jade', 'stylus'], done);
+        });
+        */
         
         // create a test for each of the input files
         (files || []).forEach(function(file) {
