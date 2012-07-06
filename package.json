@@ -16,15 +16,19 @@
   "dependencies": {
     "async": "0.1.x",
     "debug": "*",
-    "getit": "0.1.x"
+    "getit": "0.1.x",
+    "squirrel": "0.0.x",
+    "underscore": "1.3.x"
+  },
+  "optionalDependencies": {
+    "coffee-script": "1.3.x",
+    "stylus": "0.27.x"
   },
   "devDependencies": {
     "expect.js": "0.1.x",
     "mocha": "*",
-    "coffee-script": "1.3.x",
     "rigger-collate": "*"
   },
-  "optionalDepencies": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/DamonOehlman/rigger.git"
@@ -35,6 +39,5 @@
   "scripts": {
     "test": "mocha --reporter spec test/local.js && mocha --reporter spec test/manual.js && mocha --reporter spec test/settings.js && mocha --reporter spec -t 10000 test/remote.js"
   },
-  "contributors": [],
-  "optionalDependencies": {}
+  "contributors": []
 }
