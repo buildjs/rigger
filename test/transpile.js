@@ -30,6 +30,8 @@ fs.readdir(inputPath, function(err, files) {
         (files || []).forEach(function(file) {
             it('should be able to rig: ' + file, function(done) {
                 fs.stat(path.join(inputPath, file), function(err, stats) {
+                    var targetExt = targetContext[path.extname(file).slice(1)] || path.extname(file);
+                    
                     // skip directories
                     if (stats.isDirectory()) {
                         done();
@@ -40,7 +42,7 @@ fs.readdir(inputPath, function(err, files) {
                     extname = path.extname(file);
                     
                     // initialise the output filename
-                    outputFile = path.join(outputPath, path.basename(file, extname)) + targetContext[path.extname(file).slice(1)];
+                    outputFile = path.join(outputPath, path.basename(file, extname)) + targetExt;
                     
                     // read the output file
                     fs.readFile(outputFile, 'utf8', function(refErr, reference) {
