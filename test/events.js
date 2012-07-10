@@ -1,4 +1,5 @@
-var expect = require('expect.js'),
+var assert = require('assert'),
+    expect = require('expect.js'),
     rigger = require('..'),
     path = require('path'),
     fs = require('fs'),
@@ -11,26 +12,50 @@ var expect = require('expect.js'),
 
 describe('event tests', function() {
     it('it should trigger an include:file for a local file include', function(done) {
+        var included = false;
+        
         rigger.process('//= noincludes', { cwd: inputPath }, function(err, output) {
+            expect(included).to.be.ok();
+            done(err);
         })
         .on('include:file', function() {
-            done();
+            included = true;
+        });
+    });
+    
+    it('should trigger an include:error for a missing file include (in tolerant mode)', function(done) {
+        var caughtError = false;
+        
+        rigger.process('//= noincludes-missing', { cwd: inputPath, tolerant: true }, function(err, output) {
+            assert(caughtError, 'include:error event not fired');
+            done(err);
+        })
+        .on('include:error', function() {
+            caughtError = true;
         });
     });
 
     it('it should trigger an include:dir for a local dir include', function(done) {
+        var includedDir = false;
+        
         rigger.process('//= input', { cwd: __dirname }, function(err, output) {
+            assert(includedDir, 'include:dir event not fired');
+            done();
         })
         .on('include:dir', function() {
-            done();
+            includedDir = true;
         });
     });
     
     it('it should trigger an include:remote for a remote include', function(done) {
+        var includedRemote = false;
+        
         rigger.process('//= github://DamonOehlman/snippets/qsa', function(err, output) {
+            assert(includedRemote, 'include:remote not fired');
+            done(err);
         })
         .on('include:remote', function() {
-            done();
+            includedRemote = true;
         });
     });
 });
