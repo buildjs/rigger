@@ -1,12 +1,19 @@
 var assert = require('assert'),
+    expect = require('expect.js'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
     squirrel = require('squirrel'),
-    inputPath = path.resolve(__dirname, 'input-plugins'),
+    _ = require('underscore'),
+    inputPath = path.resolve(__dirname, 'input-transpile'),
     outputPath = path.resolve(__dirname, 'output'),
+    outputFile,
+    extname,
     riggerOpts = {
         encoding: 'utf8'
+    },
+    targetContext = {
+        coffee: '.js'
     };
     
 // override squirrel default functional allowing installation
@@ -29,16 +36,25 @@ fs.readdir(inputPath, function(err, files) {
                         return;
                     }
                     
+                    // extract the file extension
+                    extname = path.extname(file);
+                    
+                    // initialise the output filename
+                    outputFile = path.join(outputPath, path.basename(file, extname)) + targetContext[path.extname(file).slice(1)];
+                    
                     // read the output file
-                    fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
+                    fs.readFile(outputFile, 'utf8', function(refErr, reference) {
                         assert.ifError(refErr);
 
-                        rigger(path.join(inputPath, file), riggerOpts, function(parseErr, parsed) {
-                            assert.ifError(parseErr);
-                            assert.equal(parsed, reference);
-
-                            done(parseErr);
-                        });
+                        rigger(
+                            path.join(inputPath, file), 
+                            _.extend({}, riggerOpts, { context: path.extname(outputFile) }),
+                            function(parseErr, parsed) {
+                                assert.ifError(parseErr);
+                                assert.equal(parsed, reference);
+                                done(parseErr);
+                            }
+                        );
                     });
                 });
             });

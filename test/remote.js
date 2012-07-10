@@ -1,4 +1,4 @@
-var expect = require('expect.js'),
+var assert = require('assert'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
@@ -14,10 +14,11 @@ fs.readdir(inputPath, function(err, files) {
             it('should be able to rig: ' + file, function(done) {
                 // read the output file
                 fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
-                    expect(err).to.not.be.ok();
+                    assert.ifError(refErr);
 
                     rigger(path.join(inputPath, file), function(parseErr, parsed) {
-                        expect(parsed).to.equal(reference);
+                        assert.ifError(parseErr);
+                        assert.equal(parsed, reference);
                     
                         done(parseErr);
                     });

@@ -1,4 +1,4 @@
-var expect = require('expect.js'),
+var assert = require('assert'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
@@ -22,7 +22,8 @@ fs.readdir(inputPath, function(err, files) {
                     
                     // read the output file
                     rigger(path.join(inputPath, file), function(parseErr, parsed, settings) {
-                        expect(settings).to.eql(comparison);
+                        assert.ifError(parseErr);
+                        assert.equal(settings, comparison);
                         
                         done(parseErr);
                     });
