@@ -48,7 +48,7 @@ fs.readdir(inputPath, function(err, files) {
 
                         rigger(
                             path.join(inputPath, file), 
-                            _.extend({}, riggerOpts, { context: path.extname(outputFile) }),
+                            _.extend({}, riggerOpts, { targetType: path.extname(outputFile) }),
                             function(parseErr, parsed) {
                                 assert.ifError(parseErr);
                                 assert.equal(parsed, reference);

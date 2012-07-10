@@ -23,7 +23,7 @@ fs.readdir(inputPath, function(err, files) {
                     // read the output file
                     rigger(path.join(inputPath, file), function(parseErr, parsed, settings) {
                         assert.ifError(parseErr);
-                        assert.equal(settings, comparison);
+                        assert.deepEqual(settings, comparison);
                         
                         done(parseErr);
                     });
