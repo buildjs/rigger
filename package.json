@@ -27,14 +27,14 @@
   "devDependencies": {
     "expect.js": "0.1.x",
     "mocha": "1.2.x",
-    "rigger-collate": "*"
+    "rigger-collate": "0.3.x"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/DamonOehlman/rigger.git"
+    "url": "git://github.com/buildjs/rigger.git"
   },
   "bugs": {
-    "url": "http://github.com/DamonOehlman/rigger/issues"
+    "url": "http://github.com/buildjs/rigger/issues"
   },
   "scripts": {
     "test": "node_modules/mocha/bin/mocha --reporter spec --timeout 30000"
