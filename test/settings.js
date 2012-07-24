@@ -21,7 +21,7 @@ fs.readdir(inputPath, function(err, files) {
                     var comparison = JSON.parse(content);
                     
                     // read the output file
-                    rigger(path.join(inputPath, file), function(parseErr, parsed, settings) {
+                    rigger(path.join(inputPath, file), { settings: { test: false } }, function(parseErr, parsed, settings) {
                         assert.ifError(parseErr);
                         assert.deepEqual(settings, comparison);
                         
