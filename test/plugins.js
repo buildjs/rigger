@@ -15,10 +15,6 @@ squirrel.defaults.allowInstall = true;
 // run tests for each of the input files
 fs.readdir(inputPath, function(err, files) {
     describe('local rigging (via plugins) tests', function() {
-        after(function(done) {
-            squirrel.rm(['coffee-script', 'jade', 'stylus'], done);
-        });
-        
         // create a test for each of the input files
         (files || []).forEach(function(file) {
             it('should be able to rig: ' + file, function(done) {
