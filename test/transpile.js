@@ -10,7 +10,10 @@ var assert = require('assert'),
     outputFile,
     extname,
     riggerOpts = {
-        encoding: 'utf8'
+        encoding: 'utf8',
+        stylus: {
+            plugins: [ require('nib') ]
+        }
     },
     targetContext = {
         coffee: '.js',
@@ -24,7 +27,7 @@ squirrel.defaults.allowInstall = true;
 fs.readdir(inputPath, function(err, files) {
     describe('local rigging (via plugins) tests', function() {
         after(function(done) {
-            squirrel.rm(['coffee-script', 'jade', 'stylus'], done);
+            // squirrel.rm(['coffee-script', 'jade', 'stylus'], done);
         });
         
         // create a test for each of the input files
