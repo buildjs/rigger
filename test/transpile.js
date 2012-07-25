@@ -13,7 +13,8 @@ var assert = require('assert'),
         encoding: 'utf8'
     },
     targetContext = {
-        coffee: '.js'
+        coffee: '.js',
+        styl: '.css'
     };
     
 // override squirrel default functional allowing installation
