@@ -1,5 +1,4 @@
 var assert = require('assert'),
-    expect = require('expect.js'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),

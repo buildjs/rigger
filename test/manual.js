@@ -1,4 +1,4 @@
-var expect = require('expect.js'),
+var assert = require('assert'),
     rigger = require('..'),
     path = require('path'),
     fs = require('fs'),
@@ -27,8 +27,8 @@ describe('manual stream manipulation tests', function() {
     
     it('should be able to generate output from using rigger.write', function(done) {
         rigger.process('//= noincludes', { cwd: inputPath }, function(err, output) {
-            expect(err).to.not.be.ok();
-            expect(output).to.equal(testFiles['noincludes.js']);
+            assert.ifError(err);
+            assert.equal(output, testFiles['noincludes.js']);
             
             done(err);
         });

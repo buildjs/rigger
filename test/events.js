@@ -1,5 +1,4 @@
 var assert = require('assert'),
-    expect = require('expect.js'),
     rigger = require('..'),
     path = require('path'),
     fs = require('fs'),
@@ -15,7 +14,7 @@ describe('event tests', function() {
         var included = false;
         
         rigger.process('//= noincludes', { cwd: inputPath }, function(err, output) {
-            expect(included).to.be.ok();
+            assert(included);
             done(err);
         })
         .on('include:file', function() {

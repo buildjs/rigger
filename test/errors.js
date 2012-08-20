@@ -1,4 +1,4 @@
-var expect = require('expect.js'),
+var assert = require('assert'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
@@ -21,7 +21,7 @@ fs.readdir(inputPath, function(err, files) {
                 fs.stat(targetPath, function(err, stats) {
                     if ((! err) && stats.isFile()) {
                         rigger(targetPath, { targetType: targetExt }, function(parseErr, parsed) {
-                            expect(parseErr).to.be.ok();
+                            assert(parseErr, 'Did not receive an error when one was expected');
                             done();
                         });
                     }

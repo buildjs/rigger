@@ -1,4 +1,4 @@
-var expect = require('expect.js'),
+var assert = require('assert'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
@@ -18,11 +18,11 @@ fs.readdir(inputPath, function(err, files) {
                     if ((! err) && stats.isFile()) {
                         // read the output file
                         fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
-                            expect(refErr, 'No output file found for test').to.not.be.ok();
+                            assert.ifError(refErr, 'No output file found for test');
 
                             rigger(path.join(inputPath, file), function(parseErr, parsed) {
                                 if (! parseErr) {
-                                    expect(parsed).to.equal(reference);
+                                    assert.equal(parsed, reference);
                                 }
 
                                 done(parseErr);
