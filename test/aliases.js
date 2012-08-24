@@ -8,7 +8,9 @@ var assert = require('assert'),
     riggerOpts = {
         aliases: {
             testdir: '../includes/testdir',
-            input: '../input/'
+            input: '../input/',
+            a: 'testdir!a',
+            b: 'testdir!b'
         }
     };
 
