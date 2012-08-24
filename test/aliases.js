@@ -7,7 +7,8 @@ var assert = require('assert'),
     files = fs.readdirSync(inputPath),
     riggerOpts = {
         aliases: {
-            testdir: '../includes/testdir'
+            testdir: '../includes/testdir',
+            input: '../input/'
         }
     };
 
