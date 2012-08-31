@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    async = require('async'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
@@ -8,39 +9,42 @@ var assert = require('assert'),
         noincludes: {
             filename: 'noincludes'
         }
-    };
+    },
+    files = fs.readdirSync(inputPath);
 
-// run tests for each of the input files
-fs.readdir(inputPath, function(err, files) {
-    describe('variable expansion rigging tests', function() {
-        
-        // create a test for each of the input files
-        (files || []).forEach(function(file) {
-            it('should be able to rig: ' + file, function(done) {
-                var targetPath = path.join(inputPath, file);
+function rigAndCompare(file, done) {
+    var targetPath = path.join(inputPath, file);
+    
+    fs.stat(targetPath, function(err, stats) {
+        if ((! err) && stats.isFile()) {
+            // read the output file
+            fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
+                var testSettings = settings[path.basename(file, '.js')] || {};
                 
-                fs.stat(targetPath, function(err, stats) {
-                    if ((! err) && stats.isFile()) {
-                        // read the output file
-                        fs.readFile(path.join(outputPath, file), 'utf8', function(refErr, reference) {
-                            var testSettings = settings[path.basename(file, '.js')] || {};
-                            
-                            assert.ifError(refErr, 'No output file found for test');
+                assert.ifError(refErr, 'No output file found for test');
 
-                            rigger(path.join(inputPath, file), { settings: testSettings }, function(parseErr, parsed) {
-                                if (! parseErr) {
-                                    assert.equal(parsed, reference);
-                                }
+                rigger(path.join(inputPath, file), { settings: testSettings }, function(parseErr, parsed) {
+                    if (! parseErr) {
+                        assert.equal(parsed, reference);
+                    }
 
-                                done(parseErr);
-                            });
-                        });
-                    }
-                    else {
-                        done(err);
-                    }
+                    done(parseErr);
                 });
             });
-        });
+        }
+        else {
+            done(err);
+        }
+    });
+}
+
+describe('variable expansion rigging tests', function() {
+    // create a test for each of the input files
+    (files || []).forEach(function(file) {
+        it('should be able to rig: ' + file, rigAndCompare.bind(null, file));
+    });
+
+    it('should be able to rig all local files in parallel', function(done) {
+        async.forEach(files, rigAndCompare, done);
     });
 });
