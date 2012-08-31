@@ -1,5 +1,6 @@
 var assert = require('assert'),
     async = require('async'),
+    debug = require('debug')('transpile'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
@@ -7,8 +8,6 @@ var assert = require('assert'),
     _ = require('underscore'),
     inputPath = path.resolve(__dirname, 'input-transpile'),
     outputPath = path.resolve(__dirname, 'output'),
-    outputFile,
-    extname,
     riggerOpts = {
         encoding: 'utf8',
         stylus: {
@@ -25,17 +24,18 @@ var assert = require('assert'),
 squirrel.defaults.allowInstall = true;
 
 function rigAndCompare(file, done) {
+    debug('processing input: ' + file);
+
     fs.stat(path.join(inputPath, file), function(err, stats) {
-        var targetExt = targetContext[path.extname(file).slice(1)] || path.extname(file);
+        var targetExt = targetContext[path.extname(file).slice(1)] || path.extname(file),
+            extname = path.extname(file),
+            outputFile;
         
         // skip directories
         if (stats.isDirectory()) {
             done();
             return;
         }
-        
-        // extract the file extension
-        extname = path.extname(file);
         
         // initialise the output filename
         outputFile = path.join(outputPath, path.basename(file, extname)) + targetExt;
