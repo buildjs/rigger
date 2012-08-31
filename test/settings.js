@@ -34,9 +34,7 @@ describe('setting parser tests', function() {
         it('should be able to rig: ' + file, rigAndCompare.bind(null, file));
     });
 
-    /*
     it('should be able to rig all in parallel', function(done) {
-        async.forEach(files, rigAndCompare, done);
+        async.forEach(files.filter(notJSON), rigAndCompare, done);
     });
-    */
 });
