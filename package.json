@@ -5,7 +5,7 @@
   "tags": [
     "build"
   ],
-  "version": "0.3.18",
+  "version": "0.3.19",
   "main": "./lib/rigger.js",
   "bin": {
     "rig": "./bin/rig"
