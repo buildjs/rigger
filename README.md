@@ -2,7 +2,7 @@
 
 Rigger is a build time include engine for Javascript, CSS, CoffeeScript and in general any type of text file that you wish to might want to "include" other files into.
 
-<a href="http://travis-ci.org/#!/DamonOehlman/rigger"><img src="https://secure.travis-ci.org/DamonOehlman/rigger.png" alt="Build Status"></a>
+<a href="http://travis-ci.org/#!/buildjs/rigger"><img src="https://secure.travis-ci.org/buildjs/rigger.png" alt="Build Status"></a>
 
 It was created to make the process of creating Javascript libraries a more structured process, but can be used for other tasks also. 
 
