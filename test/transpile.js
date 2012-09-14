@@ -22,13 +22,13 @@ var assert = require('assert'),
         pegjs: '.js'
     },
     
-    // find the files to read
-    files = fs.readdirSync(inputPath),
-    
     reIgnoreFiles = /^.DS_Store/i,
     isIncluded = function(file) {
-        return file === 'arithmetics-wrapper.js'; // !reIgnoreFiles.test(file);
-    };
+        return !reIgnoreFiles.test(file);
+    },
+    
+    // find the files to read
+    files = fs.readdirSync(inputPath).filter(isIncluded);
     
 // override squirrel default functional allowing installation
 squirrel.defaults.allowInstall = true;
@@ -70,11 +70,11 @@ function rigAndCompare(file, done) {
 // run tests for each of the input files
 describe('transpiling tests', function() {
     // create a test for each of the input files
-    (files || []).filter(isIncluded).forEach(function(file) {
+    files.forEach(function(file) {
         it('should be able to rig: ' + file, rigAndCompare.bind(null, file));
     });
-
+    
     it('should be able to rig all local files in parallel', function(done) {
-        async.forEach(files.filter(isIncluded), rigAndCompare, done);
+        async.forEach(files, rigAndCompare, done);
     });
 });
