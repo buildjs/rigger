@@ -5,7 +5,12 @@ var assert = require('assert'),
     path = require('path'),
     inputPath = path.resolve(__dirname, 'input-remote'),
     outputPath = path.resolve(__dirname, 'output'),
-    files = fs.readdirSync(inputPath);
+    reIgnoreFiles = /^DS_Store/i,
+
+    // load the test files
+    files = fs.readdirSync(inputPath).filter(function(file) {
+        return !reIgnoreFiles.test(file);
+    });
 
 function rigAndCompare(file, done) {
     // read the output file

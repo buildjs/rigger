@@ -10,7 +10,7 @@ var assert = require('assert'),
     };
 
 describe('event tests', function() {
-    it('it should trigger an include:file for a local file include', function(done) {
+    it('should trigger an include:file for a local file include', function(done) {
         var included = false;
         
         rigger.process('//= noincludes', { cwd: inputPath }, function(err, output) {
@@ -19,6 +19,18 @@ describe('event tests', function() {
         })
         .on('include:file', function() {
             included = true;
+        });
+    });
+    
+    it('should trigger 2 include:file events for when including nested files', function(done) {
+        var includedFiles = [];
+        
+        rigger.process('//= local-singlefile', { cwd: inputPath }, function(err, output) {
+            assert.equal(includedFiles.length, 2);
+            done(err);
+        })
+        .on('include:file', function(file) {
+            includedFiles.push(file);
         });
     });
     
@@ -57,6 +69,18 @@ describe('event tests', function() {
             includedRemote = true;
         });
     });
+    
+    it('should trigger 2 include:remote events for when including nested files', function(done) {
+        var includedFiles = [];
+        
+        rigger.process('//= github://buildjs/rigger/test/input/local-singlefile', { cwd: inputPath }, function(err, output) {
+            assert.equal(includedFiles.length, 2);
+            done(err);
+        })
+        .on('include:remote', function(file) {
+            includedFiles.push(file);
+        });
+    });    
 
     it('should trigger an alias:invalid error when an alias is invalid', function(done) {
         var aliasInvalid = false;
