@@ -5,7 +5,11 @@ var async = require('async'),
     path = require('path'),
     inputPath = path.resolve(__dirname, 'input'),
     outputPath = path.resolve(__dirname, 'output'),
-    files = fs.readdirSync(inputPath);
+    reIgnoreFiles = /^DS_Store/i,
+    // load the test files
+    files = fs.readdirSync(inputPath).filter(function(file) {
+        return ! reIgnoreFiles.test(file);
+    });
 
 function rigAndCompare(file, done) {
     var targetPath = path.join(inputPath, file);
@@ -34,11 +38,11 @@ function rigAndCompare(file, done) {
 // run tests for each of the input files
 describe('local rigging tests', function() { 
     // create a test for each of the input files
-    (files || []).forEach(function(file) {
+    files.forEach(function(file) {
         it('should be able to rig: ' + file, rigAndCompare.bind(null, file));
 
     });
-
+    
     it('should be able to rig all local files in parallel', function(done) {
         async.forEach(files, rigAndCompare, done);
     });

@@ -15,6 +15,7 @@ var assert = require('assert'),
         }
     },
     targetContext = {
+        js: '.js',
         coffee: '.js',
         roy: '.js',
         styl: '.css',
@@ -26,7 +27,7 @@ var assert = require('assert'),
     
     reIgnoreFiles = /^.DS_Store/i,
     isIncluded = function(file) {
-        return !reIgnoreFiles.test(file);
+        return file === 'arithmetics-wrapper.js'; // !reIgnoreFiles.test(file);
     };
     
 // override squirrel default functional allowing installation
