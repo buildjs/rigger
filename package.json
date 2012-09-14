@@ -23,7 +23,8 @@
   "pluginDependencies": {
     "coffee-script": "1.3.x",
     "stylus": "0.28.x",
-    "nib": "0.7.x"
+    "nib": "0.7.x",
+    "pegjs": "0.7.x"
   },
   "devDependencies": {
     "mocha": "1.2.x",
