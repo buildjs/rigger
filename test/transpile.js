@@ -59,7 +59,11 @@ function rigAndCompare(file, done) {
                 _.extend({}, riggerOpts, { targetType: path.extname(outputFile) }),
                 function(parseErr, parsed) {
                     assert.ifError(parseErr);
-                    assert.equal(parsed.replace(/([^\r])\n/g, '$1\r\n'), reference);
+
+                    assert.equal(
+                        parsed.replace(/\r\n/g, '\n'),
+                        reference.replace(/\r\n/g, '\n')
+                    );
                     done(parseErr);
                 }
             );
