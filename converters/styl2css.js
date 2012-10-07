@@ -1,6 +1,6 @@
 var debug = require('debug')('rigger'),
     path = require('path'),
-    squirrel = require('squirrel'),
+    converters = require('./'),
     _ = require('underscore');
 
 module.exports = function(input, opts, callback) {
@@ -10,13 +10,11 @@ module.exports = function(input, opts, callback) {
     opts = _.extend((this.opts || {}).stylus || {}, {
         paths: [ this.opts.cwd ]
     });
-
-    // use squirrel to load stylus
-    squirrel('stylus', function(err, stylus) {
-        if (err) {
-            callback(new Error('Stylus not available'));
-        }
-        else {
+    
+    converters
+        .require('stylus')
+        .on('error', callback)
+        .on('ok', function(stylus) {
             // create the renderer
             renderer = stylus(input, opts);
             
@@ -25,12 +23,11 @@ module.exports = function(input, opts, callback) {
                 debug('loaded plugin: ', plugin);
                 renderer.use(plugin(opts));
             });
-
+            
             // render stylus (pass through opts)
             debug('running stylus conversion, opts = ', opts);
             renderer.render(function(err, data) {
                 callback(err, data, opts);
             });
-        }
-    });
+        });
 };

@@ -3,7 +3,6 @@ var assert = require('assert'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
-    squirrel = require('squirrel'),
     inputPath = path.resolve(__dirname, 'input-plugins'),
     outputPath = path.resolve(__dirname, 'output'),
     riggerOpts = {
@@ -11,9 +10,6 @@ var assert = require('assert'),
     },
     files = fs.readdirSync(inputPath);
     
-// override squirrel default functional allowing installation
-squirrel.defaults.allowInstall = true;
-
 function rigAndCompare(file, done) {
     fs.stat(path.join(inputPath, file), function(err, stats) {
         // skip directories

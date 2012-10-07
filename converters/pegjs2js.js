@@ -1,15 +1,14 @@
 var debug = require('debug')('rigger-pegjs'),
     path = require('path'),
-    squirrel = require('squirrel');
+    converters = require('./');
 
 module.exports = function(input, opts, callback) {
     var rigger = this;
     
-    squirrel('pegjs', function(err, PEG) {
-        if (err) {
-            callback(new Error('PEG.js not available'));
-        }
-        else {
+    converters
+        .require('pegjs')
+        .on('error', callback)
+        .on('ok', function(PEG) {
             // create the parser
             var parser = PEG.buildParser(input),
                 output = parser.toSource(),
@@ -26,6 +25,5 @@ module.exports = function(input, opts, callback) {
             
             // fire the callback
             callback(null, 'var ' + basename + ' = ' + output + ';', opts);
-        }
-    });
+        });
 };

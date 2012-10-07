@@ -4,7 +4,6 @@ var assert = require('assert'),
     rigger = require('..'),
     fs = require('fs'),
     path = require('path'),
-    squirrel = require('squirrel'),
     _ = require('underscore'),
     inputPath = path.resolve(__dirname, 'input-transpile'),
     outputPath = path.resolve(__dirname, 'output'),
@@ -30,9 +29,6 @@ var assert = require('assert'),
     // find the files to read
     files = fs.readdirSync(inputPath).filter(isIncluded);
     
-// override squirrel default functional allowing installation
-squirrel.defaults.allowInstall = true;
-
 function rigAndCompare(file, done) {
     debug('processing input: ' + file);
 
