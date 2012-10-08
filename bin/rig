@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+var path = require('path');
 
-require('../')(process.argv[2], function(err, output) {
+require('../')(path.resolve(process.argv[2]), function(err, output) {
     if (! err) {
-        process.stdout.write(output);
+        process.stdout.write(output + '\n');
     }
     else {
         console.log(err);
