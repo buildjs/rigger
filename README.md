@@ -98,7 +98,15 @@ In some instances you may want to cherrypick particular files from a directory /
 
 In addition to including files you can also use some plugins to extend the core functionality.  To flag that you want to use a plugin in your core files, use add the word plugin __directly__ after the `=` in the comment (e.g. `//=plugin name params`, `/*=plugin name params */`, `#=plugin name params`, etc).
 
-More soon...
+### shim plugin
+
+The shim plugin allows to you require specific ES5 shims that you wish to include into your code so IE doesn't go and break on you:
+
+```js
+//=shim String.trim Array.indexOf
+```
+
+The shim contents are sourced from the [buildjs/shims](https://github.com/buildjs/shims) repository, which is currently incomplete so feel free to help out by adding appropriate shims.
 
 ## Programmatic Use
 
