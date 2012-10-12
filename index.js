@@ -5,7 +5,7 @@ var async = require('async'),
     fs = require('fs'),
     path = require('path'),
     util = require('util'),
-    sourcemap = require('source-map'),
+    directives = require('./directives/'),
     _ = require('underscore'),
 
     // define some reusable regexes,
@@ -26,14 +26,14 @@ var async = require('async'),
 
     // initialise the default converters
     converters = {},
-
-    // intialise line endings based on platform
-    lineEnding = process.platform == 'win32' ? '\r\n' : '\n',
+    
+    // initialise the default line ending
+    defaultLineEnding = (process.platform == 'win32' ? '\r\n' : '\n'),
 
     // initialise the concatenators
     concatenators = {
-        js: ';' + lineEnding,
-        default: lineEnding
+        js: ';' + defaultLineEnding,
+        default: defaultLineEnding
     },
 
     // include patterns as used in interleave
@@ -94,6 +94,9 @@ function Rigger(opts) {
 
     // initialise the encoding (default to utf8)
     this.encoding = this.opts.encoding || 'utf8';
+    
+    // initialise the line ending
+    this.lineEnding = this.opts.lineEnding || defaultLineEnding;
 
     // initialise the cwd (this is also used by getit)
     this.cwd = this.opts.cwd || process.cwd();
@@ -119,9 +122,6 @@ function Rigger(opts) {
 
     // create the output array
     this.output = [];
-    
-    // create the sourcemap
-    this.sourceMap = new sourcemap.SourceMapGenerator();
 }
 
 util.inherits(Rigger, Stream);
@@ -187,7 +187,7 @@ Rigger.prototype.get = function(getTarget, callback) {
         targets,
         this._getSingle.bind(this),
         function(err, results) {
-            callback(err, (results || []).join(lineEnding));
+            callback(err, (results || []).join(rigger.lineEnding));
         }
     );
 };
@@ -207,7 +207,7 @@ Rigger.prototype.end = function() {
         var conversion = this._getConversion(this.filetype);
 
         debug('finished writing to rigger stream, determining if conversion is required');
-        this.convert(conversion, this.output.join(lineEnding), function(err, content) {
+        this.convert(conversion, this.output.join(rigger.lineEnding), function(err, content) {
             if (err) {
                 rigger.emit('error', err);
             }
@@ -452,9 +452,13 @@ Rigger.prototype._expandIncludes = function(settings, line, sourceLine, callback
             },
 
             function(err, results) {
+                var output;
+                
+                // if we hit an error trigger the callback
                 if (err) return callback(err);
-
-                callback(null, results.join(lineEnding));
+                
+                // wrap the results with appropriate directives
+                directives.wrap(rigger, results, match, sourceLine, callback);
             }
         );
     });
@@ -497,7 +501,7 @@ Rigger.prototype._fork = function(files, callback) {
             // TODO: process child source map and integrate into main sourcemap
             
             debug('finished subrigging', results);
-            callback(null, (results || []).join(lineEnding));
+            callback(null, (results || []).join(rigger.lineEnding));
         }
     );
 };
@@ -764,7 +768,7 @@ function _attachCallback(rigger, opts, callback) {
             // on end emit the data
             .on('end', function() {
                 if (callback && (! aborted)) {
-                    callback(null, output.join(lineEnding), settings);
+                    callback(null, output.join(rigger.lineEnding), settings);
                 }
             });
     }
