@@ -5,6 +5,7 @@ var async = require('async'),
     fs = require('fs'),
     path = require('path'),
     util = require('util'),
+    sourcemap = require('source-map'),
     _ = require('underscore'),
 
     // define some reusable regexes,
@@ -83,7 +84,7 @@ function Rigger(opts) {
 
     // initialise the basename from the opts
     this.basename = opts.basename;
-
+    
     // initialise the default file format
     this.filetype = this._normalizeExt(opts.filetype || 'js');
     debug('filetype initialized to: ' + this.filetype);
@@ -118,6 +119,9 @@ function Rigger(opts) {
 
     // create the output array
     this.output = [];
+    
+    // create the sourcemap
+    this.sourceMap = new sourcemap.SourceMapGenerator();
 }
 
 util.inherits(Rigger, Stream);
@@ -398,12 +402,12 @@ Rigger.prototype._expandAliases = function(target) {
     return target;
 };
 
-Rigger.prototype._expandIncludes = function(settings, line, parentLineNo, callback) {
+Rigger.prototype._expandIncludes = function(settings, line, sourceLine, callback) {
     var rigger = this, 
         ii, regexes = this.regexes,
         cacheResults,
         match, action,
-        lineNo = 0;
+        childLine = sourceLine;
 
     // iterate through the regexes and see if this line is a match
     for (ii = regexes.length; (!match) && ii--; ) {
@@ -444,7 +448,7 @@ Rigger.prototype._expandIncludes = function(settings, line, parentLineNo, callba
         async.map(
             (content || '').split(reLineBreak).map(_cleanLine),
             function(line, itemCallback) {
-                rigger._expandIncludes(settings, match[1] + line, lineNo++, itemCallback);
+                rigger._expandIncludes(settings, match[1] + line, childLine++, itemCallback);
             },
 
             function(err, results) {
@@ -490,6 +494,8 @@ Rigger.prototype._fork = function(files, callback) {
         },
 
         function(err, results) {
+            // TODO: process child source map and integrate into main sourcemap
+            
             debug('finished subrigging', results);
             callback(null, (results || []).join(lineEnding));
         }
