@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Rigger by buildjs</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Rigger</h1>
+          <h2>Javascript file parser and include engine #buildjs #node</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/buildjs/rigger/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/buildjs/rigger/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/buildjs/rigger" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>Rigger</h1>
+
+<p>Rigger is a build time include engine for Javascript, CSS, CoffeeScript and in general any type of text file that you wish to might want to "include" other files into.</p>
+
+<p><a href="http://travis-ci.org/#!/buildjs/rigger"><img src="https://secure.travis-ci.org/buildjs/rigger.png" alt="Build Status"></a></p>
+
+<p>It was created to make the process of creating Javascript libraries a more structured process, but can be used for other tasks also. </p>
+
+<p>As a developer you are encouraged to write modular, reusable code but when it comes to writing client-side applications your ability to do this effectively is generally hampered by what I call the <em>single-file principle</em>.  In most cases a good programmer rages against this and implements some kind of custom <code>Makefile</code>, <a href="http://ant.apache.org/">ant build</a> or <a href="http://rake.rubyforge.org/">Rakefile</a> to help with their build.</p>
+
+<p>The "build" process, however, generally involves taking a number of files and concatenating them together in a sensible order.  I, however, wanted something more flexible.  To be precise, I wanted the following:</p>
+
+<ul>
+<li>The ability to inject a file into specific line in another file.</li>
+<li>The ability to reuse code from other libraries.</li>
+<li>The ability to do includes from the web (namely github repos)</li>
+</ul><p>This is the functionality that Rigger provides.  It was originally built 6 months ago as part of <a href="/DamonOehlman/interleave">Interleave</a> but has it's own identity, tests and is generally better.</p>
+
+<h2>Using Rigger</h2>
+
+<p>First you will want to install it.  You'll need <a href="http://npmjs.org">npm</a> to do this, once you do you can simply run <code>npm install -g rigger</code>. To get starting using rigger, you simply start placing special <strong>include comments</strong> in a file that you want rigger to process.</p>
+
+<p><strong>Javascript:</strong></p>
+
+<div class="highlight"><pre><span class="c1">//= includes/test</span>
+</pre></div>
+
+<p><strong>CoffeeScript:</strong></p>
+
+<div class="highlight"><pre><span class="c1">#= includes/test</span>
+</pre></div>
+
+<p><strong>CSS:</strong></p>
+
+<div class="highlight"><pre><span class="c">/*= includes/test */</span>
+</pre></div>
+
+<p>Notice that each of the examples is using single-line comments (even if they are a block comment in the case of the CSS example).  This is important to note as Rigger parses files on a <strong>line by line</strong> basis rather through through tokenizing.  If you use block comments like the following CSS example, it won't work:</p>
+
+<div class="highlight"><pre><span class="c">/*=</span>
+<span class="c">includes/test1</span>
+<span class="c">includes/test2</span>
+<span class="c">*/</span>
+</pre></div>
+
+<p>Once you have a file that is has been properly rigged, you can use the <code>rig</code> command line tool to turn a rigged file into it's big brother:</p>
+
+<pre><code>rig input.js &gt; output.js
+</code></pre>
+
+<h2>Include All the Things</h2>
+
+<p>Rigger supports a number of special include formats, and these are demonstrated in examples below.  While JS examples are provided, the formats will work in any of the known file formats.</p>
+
+<h3>Remote Resources</h3>
+
+<p>Remote resources are those stored accessible via HTTP (or HTTPS).  </p>
+
+<p><strong>HTTP(S) Include:</strong></p>
+
+<div class="highlight"><pre><span class="c1">// include jquery from the CDN so you can run offline perhaps...</span>
+<span class="c1">//= http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js</span>
+</pre></div>
+
+<p><strong>Github Include:</strong></p>
+
+<div class="highlight"><pre><span class="c1">//= github://DamonOehlman/alignit/alignit.js</span>
+</pre></div>
+
+<h3>Multiple File Include</h3>
+
+<p>Being lazy is ok.  Rigger provides some nice shortcuts to help you in your quest:</p>
+
+<p><strong>Directory Includes:</strong></p>
+
+<p>Simply specify a directory in the include string and all files of the same type as the currently parsed file will be included.  In the tests/input directory have a look for the <code>local-includedir.js</code> and <code>local-includedir.css</code> files.</p>
+
+<div class="highlight"><pre><span class="c1">//= ../includes/testdir</span>
+</pre></div>
+
+<p><strong>Cherrypick Include:</strong></p>
+
+<p>In some instances you may want to cherrypick particular files from a directory / remote repository.  Rather than typing multiple include lines, you can simply type one statement and use square brackets to signal to Rigger that you want to include multiple files:</p>
+
+<div class="highlight"><pre><span class="c1">//= ../includes/testdir[a, b]</span>
+</pre></div>
+
+<h2>Plugin Support</h2>
+
+<p>In addition to including files you can also use some plugins to extend the core functionality.  To flag that you want to use a plugin in your core files, use add the word plugin <strong>directly</strong> after the <code>=</code> in the comment (e.g. <code>//=plugin name params</code>, <code>/*=plugin name params */</code>, <code>#=plugin name params</code>, etc).</p>
+
+<h3>shim plugin</h3>
+
+<p>The shim plugin allows to you require specific ES5 shims that you wish to include into your code so IE doesn't go and break on you:</p>
+
+<div class="highlight"><pre><span class="c1">//=shim String.trim Array.indexOf</span>
+</pre></div>
+
+<p>The shim contents are sourced from the <a href="https://github.com/buildjs/shims">buildjs/shims</a> repository, which is currently incomplete so feel free to help out by adding appropriate shims.</p>
+
+<h2>Programmatic Use</h2>
+
+<p>To be completed.</p>
+
+<h2>Streams FTW!</h2>
+
+<p>One of the simplest ways of composing process flows in node is to use streams, and while Interleave does not support a streaming interface, Rigger inherits from the node <a href="http://nodejs.org/docs/latest/api/stream.html">Stream</a>.</p>
+
+<p>This means that you can do all kinds of things prior to rigging in your inline dependencies and all kinds of things afterwards to.</p>
+        </section>
+
+        <footer>
+          Rigger is maintained by <a href="https://github.com/buildjs">buildjs</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
