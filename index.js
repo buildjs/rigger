@@ -219,7 +219,8 @@ Rigger.prototype.end = function() {
 Rigger.prototype.write = function(data, all) {
     var rigger = this, lines,
         settings = this.baseSettings,
-        previousCSD = this.csd;
+        previousCSD = this.csd,
+        lineno = 0;
 
     // if we have active includes, then wait until we resume before pushing out more data
     // otherwise we risk pushing data back not in order (which would be less than ideal)
@@ -244,7 +245,9 @@ Rigger.prototype.write = function(data, all) {
         lines,
 
         // expand the known includes
-        this._expandIncludes.bind(this, settings),
+        function(line, itemCallback) {
+            rigger._expandIncludes(settings, line, lineno++, itemCallback);
+        },
 
         function(err, result) {
             // restore the previous current source directory
@@ -300,9 +303,7 @@ Rigger.prototype.include = function(match, settings, callback) {
 
     // get the file
     debug('including: ' + target);
-    this.get(target, function(err, data) {
-        callback(err, data);
-    });
+    this.get(target, callback);
 };
 
 Rigger.prototype.plugin = function(match, settings, callback) {
@@ -397,11 +398,12 @@ Rigger.prototype._expandAliases = function(target) {
     return target;
 };
 
-Rigger.prototype._expandIncludes = function(settings, line, callback) {
+Rigger.prototype._expandIncludes = function(settings, line, parentLineNo, callback) {
     var rigger = this, 
         ii, regexes = this.regexes,
         cacheResults,
-        match, action;
+        match, action,
+        lineNo = 0;
 
     // iterate through the regexes and see if this line is a match
     for (ii = regexes.length; (!match) && ii--; ) {
@@ -442,7 +444,7 @@ Rigger.prototype._expandIncludes = function(settings, line, callback) {
         async.map(
             (content || '').split(reLineBreak).map(_cleanLine),
             function(line, itemCallback) {
-                rigger._expandIncludes(settings, match[1] + line, itemCallback);
+                rigger._expandIncludes(settings, match[1] + line, lineNo++, itemCallback);
             },
 
             function(err, results) {
