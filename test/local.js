@@ -9,7 +9,7 @@ var async = require('async'),
     // load the test files
     files = fs.readdirSync(inputPath).filter(function(file) {
         return ! reIgnoreFiles.test(file);
-    }).slice(0, 3);
+    });
 
 function rigAndCompare(file, done) {
     var targetPath = path.join(inputPath, file);

@@ -5,7 +5,6 @@ var async = require('async'),
     fs = require('fs'),
     path = require('path'),
     util = require('util'),
-    directives = require('./directives/'),
     _ = require('underscore'),
 
     // define some reusable regexes,
@@ -34,6 +33,14 @@ var async = require('async'),
     concatenators = {
         js: ';' + defaultLineEnding,
         default: defaultLineEnding
+    },
+    
+    // initialise comments pre and post that will be injected when creating
+    // additional comment lines
+    defaultCommentSyntax = { pre: '//' },
+    commentTypes = {
+        css:     { pre: '/*', post: '*/' },
+        coffee:  { pre: '#' }
     },
 
     // include patterns as used in interleave
@@ -75,7 +82,7 @@ function Rigger(opts) {
     // save a reference to the options
     // these options will be passed through to getit calls
     opts = this.opts = _.extend({}, opts);
-
+    
     // initialise the base settings that will be passed through to include calls
     this.baseSettings = _.extend({}, opts.settings);
 
@@ -122,6 +129,9 @@ function Rigger(opts) {
 
     // create the output array
     this.output = [];
+    
+    // initialise whether directives should be included or not
+    this.useDirectives = opts.useDirectives || false;
 }
 
 util.inherits(Rigger, Stream);
@@ -452,13 +462,7 @@ Rigger.prototype._expandIncludes = function(settings, line, sourceLine, callback
             },
 
             function(err, results) {
-                var output;
-                
-                // if we hit an error trigger the callback
-                if (err) return callback(err);
-                
-                // wrap the results with appropriate directives
-                directives.wrap(rigger, results, match, sourceLine, callback);
+                callback(err, results.join(rigger.lineEnding));
             }
         );
     });
@@ -471,7 +475,8 @@ Rigger.prototype._fork = function(files, callback) {
         subriggerOpts = {
             encoding: this.encoding,
             csd: this.csd,
-            targetType: this.filetype
+            targetType: this.filetype,
+            useDirectives: this.useDirectives
         };
 
     // ensure we have an array for files
@@ -491,6 +496,9 @@ Rigger.prototype._fork = function(files, callback) {
             // create the subrigger
             debug('subrigging: ' + file);
             subrigger = rig(file, subriggerOpts, itemCallback);
+            
+            // add leader lines to the subrigger
+            subrigger._writeDirective('INC', { file: file });
 
             // attach the subrigger events
             subrigger.on('include:file', rigger.emit.bind(rigger, 'include:file'));
@@ -643,6 +651,20 @@ Rigger.prototype._normalizeExt = function(ext) {
     return (ext || '').replace(reLeadingDot, '').toLowerCase();
 };
 
+Rigger.prototype._writeDirective = function(name, data) {
+    var comment = commentTypes[this.targetType] || defaultCommentSyntax,
+        lineData = [
+            comment.pre,
+            name.toUpperCase() + '>>>',
+            JSON.stringify(data),
+            comment.post || ''
+        ];
+    
+    if (this.useDirectives) {
+        this.output[this.output.length] = lineData.join(' ');
+    }
+};
+
 var rig = exports = module.exports = function(targetFile, opts, callback) {
     var parser;
 
@@ -768,6 +790,7 @@ function _attachCallback(rigger, opts, callback) {
             // on end emit the data
             .on('end', function() {
                 if (callback && (! aborted)) {
+                    
                     callback(null, output.join(rigger.lineEnding), settings);
                 }
             });
