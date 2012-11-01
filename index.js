@@ -5,23 +5,10 @@ var async = require('async'),
     fs = require('fs'),
     path = require('path'),
     util = require('util'),
+    aliases = require('buildjs.core/aliases'),
+    regexes = require('buildjs.core/regexes'),
+    formatters = require('buildjs.core/formatters'),
     _ = require('underscore'),
-
-    // define some reusable regexes,
-    reLineBreak = /\n/,
-    reTrailingReturn = /\r$/,
-    reLeadingDot = /^\./,
-    reTrailingDot = /\.$/,
-    reLeadingSlash = /^\//,
-    reTrailingSlash = /\/$/,
-    reMultiTarget = /^(.*?)\[(.*)\]$/,
-    reAlias = /^([\w\-]+)\!(.*)$/,
-
-    reIncludeDoubleSlash = /^(\s*)\/\/\=(\w*)\s*(.*)$/,
-    reIncludeSlashStar = /^(\s*)\/\*\=(\w*)\s*(.*?)\s*\*\/$/,
-    reIncludeHash = /^(\s*)\#\=(\w*)\s*(.*)$/,
-    reQuotesLeadAndTrail = /(^[\"\']|[\"\']$)/g,
-    reFallbackDelim = /\s+\:\s+/,
 
     // initialise the default converters
     converters = {},
@@ -43,25 +30,9 @@ var async = require('async'),
         coffee:  { pre: '#' }
     },
 
-    // include patterns as used in interleave
-    includeRegexes = {
-        // core supported file types
-        js:     [ reIncludeDoubleSlash, reIncludeSlashStar ],
-        css:    [ reIncludeSlashStar ],
-
-        // other cool languages that I use every now and again
-        coffee: [ reIncludeHash ],
-        roy:    [ reIncludeDoubleSlash ],
-        styl:   [ reIncludeDoubleSlash ]
-    },
-
     // get a reference to the platform correct exists function
     _exists = fs.exists || path.exists,
     _existsSync = fs.existsSync || path.existsSync;
-
-function _cleanLine(line) {
-    return line.replace(reTrailingReturn, '');
-}
 
 /**
 # Class: Rigger > Stream
@@ -110,7 +81,7 @@ function Rigger(opts) {
     this.csd = this.opts.csd || this.cwd;
 
     // initiliase the include pattern
-    this.regexes = this.opts.regexes || includeRegexes[this.filetype] || includeRegexes.js;
+    this.regexes = this.opts.regexes || regexes.includes[this.filetype] || regexes.includes.js;
 
     // initialise the stream as writable
     this.writable = true;
@@ -183,7 +154,7 @@ Rigger.prototype.convert = function(conversion, input, opts, callback) {
 
 Rigger.prototype.get = function(getTarget, callback) {
     var rigger = this,
-        multiMatch = reMultiTarget.exec(getTarget),
+        multiMatch = regexes.multiTarget.exec(getTarget),
         targets = [getTarget];
 
     // check whether we have more than one target
@@ -243,7 +214,10 @@ Rigger.prototype.write = function(data, all) {
     }
 
     // split on line breaks and include the remainder
-    lines = (this.buffer + data).toString(this.encoding).split(reLineBreak).map(_cleanLine);
+    lines = (this.buffer + data)
+                .toString(this.encoding)
+                .split(regexes.lineBreak)
+                .map(formatters.stripTrailingWhitespace);
 
     // reset the remainder
     this.buffer = '';
@@ -293,7 +267,7 @@ Rigger.prototype.write = function(data, all) {
 
 Rigger.prototype.include = function(match, settings, callback) {
     var rigger = this,
-        templateText = match[3].replace(reTrailingDot, '').replace(reQuotesLeadAndTrail, ''),
+        templateText = match[3].replace(regexes.trailingDot, '').replace(regexes.quotesLeadAndTrail, ''),
         target, targetExt, conversion;
 
     // initialise the target
@@ -389,29 +363,6 @@ Rigger.prototype.resolve = function(targetPath) {
 
 /* internal functions */
 
-Rigger.prototype._expandAliases = function(target) {
-    var match = reAlias.exec(target),
-        aliases = this.opts.aliases || {},
-        base;
-
-    // if the target is an aliases, then construct into an actual target
-    if (match) {
-        // if the alias is not valid, then fire the invalid alias event
-        if (! aliases[match[1]]) {
-            this.emit('alias:invalid', match[1]);
-        }
-
-        // update the base reference
-        base = (aliases[match[1]] || '').replace(reTrailingSlash, '');
-
-        // update the target, recursively expand
-        target = this._expandAliases(base + '/' + match[2].replace(reLeadingSlash, ''));
-        debug('found alias, ' + match[1] + ' expanding target to: ' + target);
-    }
-
-    return target;
-};
-
 Rigger.prototype._expandIncludes = function(settings, line, sourceLine, callback) {
     var rigger = this, 
         ii, regexes = this.regexes,
@@ -456,7 +407,7 @@ Rigger.prototype._expandIncludes = function(settings, line, sourceLine, callback
 
         // parse the lines
         async.map(
-            (content || '').split(reLineBreak).map(_cleanLine),
+            (content || '').split(regexes.lineBreak).map(formatters.stripTrailingWhitespace),
             function(line, itemCallback) {
                 rigger._expandIncludes(settings, match[1] + line, childLine++, itemCallback);
             },
@@ -525,14 +476,14 @@ Rigger.prototype._getConversion = function(ext) {
 Rigger.prototype._getSingle = function(target, callback) {
     var rigger = this,
         previousCSD,
-        targetOptions = target.split(reFallbackDelim),
+        targetOptions = target.split(regexes.fallbackDelim),
         fallbacks = targetOptions.slice(1),
         // only use tolerant mode if we have no fallbacks
         tolerant = this.tolerant && fallbacks.length === 0,
         files;
 
     // remap the target to the first target option
-    target = this._expandAliases(targetOptions[0]);
+    target = aliases.expand(targetOptions[0], rigger.opts.aliases);
     debug('getting: ' + target);
 
     // create an attempt fallback function that will help with rerunning the getSingle method for alternative options
@@ -550,7 +501,7 @@ Rigger.prototype._getSingle = function(target, callback) {
     // check if we have a csd (current source directory) that is remote
     // and a target that is non remote
     if (getit.isRemote(this.csd) && (! getit.isRemote(target))) {
-        target = this.csd.replace(reTrailingSlash) + '/' + target;
+        target = this.csd.replace(regexes.trailingSlash) + '/' + target;
     }
 
     // if the target is remote, then let getit do it's job
@@ -648,7 +599,7 @@ Rigger.prototype._getSingle = function(target, callback) {
 };
 
 Rigger.prototype._normalizeExt = function(ext) {
-    return (ext || '').replace(reLeadingDot, '').toLowerCase();
+    return (ext || '').replace(regexes.leadingDot, '').toLowerCase();
 };
 
 Rigger.prototype._writeDirective = function(name, data) {
@@ -739,7 +690,7 @@ exports.process = function(data, opts, callback) {
 exports.Rigger = Rigger;
 
 // expose the regexes for tweaking
-exports.regexes = includeRegexes;
+exports.regexes = regexes.includes;
 
 // patch in the default converters
 fs.readdirSync(path.resolve(__dirname, 'converters')).forEach(function(converterFile) {
