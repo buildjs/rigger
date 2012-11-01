@@ -8,18 +8,16 @@ var async = require('async'),
     aliases = require('buildjs.core/aliases'),
     regexes = require('buildjs.core/regexes'),
     formatters = require('buildjs.core/formatters'),
+    platform = require('buildjs.core/platform'),
     _ = require('underscore'),
 
     // initialise the default converters
     converters = {},
     
-    // initialise the default line ending
-    defaultLineEnding = (process.platform == 'win32' ? '\r\n' : '\n'),
-
     // initialise the concatenators
     concatenators = {
-        js: ';' + defaultLineEnding,
-        default: defaultLineEnding
+        js: ';' + platform.lineEnding,
+        default: platform.lineEnding
     },
     
     // initialise comments pre and post that will be injected when creating
@@ -64,7 +62,7 @@ function Rigger(opts) {
     this.basename = opts.basename;
     
     // initialise the default file format
-    this.filetype = this._normalizeExt(opts.filetype || 'js');
+    this.filetype = formatters.normalizeExt(opts.filetype || 'js');
     debug('filetype initialized to: ' + this.filetype);
 
     // initialise the concatenator based on the filetype
@@ -74,7 +72,7 @@ function Rigger(opts) {
     this.encoding = this.opts.encoding || 'utf8';
     
     // initialise the line ending
-    this.lineEnding = this.opts.lineEnding || defaultLineEnding;
+    this.lineEnding = this.opts.lineEnding || platform.lineEnding;
 
     // initialise the cwd (this is also used by getit)
     this.cwd = this.opts.cwd || process.cwd();
@@ -90,7 +88,7 @@ function Rigger(opts) {
     this.activeIncludes = 0;
 
     // initialise the context, if not explicitly defined, match the filetype
-    this.targetType = this._normalizeExt(this.opts.targetType || this.filetype);
+    this.targetType = formatters.normalizeExt(this.opts.targetType || this.filetype);
 
     // initialise the buffer to empty
     this.buffer = '';
@@ -216,8 +214,7 @@ Rigger.prototype.write = function(data, all) {
     // split on line breaks and include the remainder
     lines = (this.buffer + data)
                 .toString(this.encoding)
-                .split(regexes.lineBreak)
-                .map(formatters.stripTrailingWhitespace);
+                .split(regexes.lineBreak);
 
     // reset the remainder
     this.buffer = '';
@@ -407,7 +404,7 @@ Rigger.prototype._expandIncludes = function(settings, line, sourceLine, callback
 
         // parse the lines
         async.map(
-            (content || '').split(regexes.lineBreak).map(formatters.stripTrailingWhitespace),
+            (content || '').split(regexes.lineBreak),
             function(line, itemCallback) {
                 rigger._expandIncludes(settings, match[1] + line, childLine++, itemCallback);
             },
@@ -467,7 +464,7 @@ Rigger.prototype._fork = function(files, callback) {
 
 Rigger.prototype._getConversion = function(ext) {
     // normalize the extension to the format .ext
-    ext = this._normalizeExt(ext);
+    ext = formatters.normalizeExt(ext);
 
     // otherwise, check whether a conversion is required
     return ext && ext !== this.targetType ? (ext + '2' + this.targetType).replace(/\./g, '') : undefined;
@@ -596,10 +593,6 @@ Rigger.prototype._getSingle = function(target, callback) {
     }
 
 
-};
-
-Rigger.prototype._normalizeExt = function(ext) {
-    return (ext || '').replace(regexes.leadingDot, '').toLowerCase();
 };
 
 Rigger.prototype._writeDirective = function(name, data) {
@@ -742,7 +735,11 @@ function _attachCallback(rigger, opts, callback) {
             .on('end', function() {
                 if (callback && (! aborted)) {
                     
-                    callback(null, output.join(rigger.lineEnding), settings);
+                    callback(
+                        null, 
+                        output.map(formatters.stripTrailingWhitespace).join(rigger.lineEnding), 
+                        settings
+                    );
                 }
             });
     }
