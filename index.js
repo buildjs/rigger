@@ -79,7 +79,7 @@ function Rigger(opts) {
     this.csd = this.opts.csd || this.cwd;
 
     // initiliase the include pattern
-    this.regexes = this.opts.regexes || regexes.includes[this.filetype] || regexes.includes.js;
+    this.patterns = this.opts.patterns || regexes.includes[this.filetype] || regexes.includes.js;
 
     // initialise the stream as writable
     this.writable = true;
@@ -264,7 +264,9 @@ Rigger.prototype.write = function(data, all) {
 
 Rigger.prototype.include = function(match, settings, callback) {
     var rigger = this,
-        templateText = match[3].replace(regexes.trailingDot, '').replace(regexes.quotesLeadAndTrail, ''),
+        templateText = match[3]
+            .replace(regexes.trailingDot, '')
+            .replace(regexes.quotesLeadAndTrail, ''),
         target, targetExt, conversion;
 
     // initialise the target
@@ -362,15 +364,15 @@ Rigger.prototype.resolve = function(targetPath) {
 
 Rigger.prototype._expandIncludes = function(settings, line, sourceLine, callback) {
     var rigger = this, 
-        ii, regexes = this.regexes,
+        ii, patterns = this.patterns,
         cacheResults,
         match, action,
         childLine = sourceLine;
 
     // iterate through the regexes and see if this line is a match
-    for (ii = regexes.length; (!match) && ii--; ) {
+    for (ii = patterns.length; (!match) && ii--; ) {
         // test for a regex match
-        match = regexes[ii].exec(line);
+        match = patterns[ii].exec(line);
 
         // if we have a match, then process the result
         if (match) {
