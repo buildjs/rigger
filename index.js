@@ -5,6 +5,7 @@ var async = require('async'),
     fs = require('fs'),
     path = require('path'),
     util = require('util'),
+    mod = require('module'),
     aliases = require('buildjs.core/aliases'),
     regexes = require('buildjs.core/regexes'),
     formatters = require('buildjs.core/formatters'),
@@ -294,48 +295,30 @@ Rigger.prototype.include = function(match, settings, callback) {
 };
 
 Rigger.prototype.plugin = function(match, settings, callback) {
-    var pluginName = match[3],
+    var rigger = this,
+        pluginName = match[3],
         plugin,
         scope = {
             done: callback
         },
-        packagePath = this.cwd,
-        lastPackagePath = '';
+        paths = mod._nodeModulePaths(this.cwd)
+            .concat(mod._nodeModulePaths(this.csd))
+            .concat(mod._resolveLookupPaths(this.cwd)[1]);
 
-    // first try to include a node_module from the cwd
-    try {
-        // FIXME: hacky
-        while (packagePath && packagePath != lastPackagePath && (! _existsSync(path.join(packagePath, 'package.json')))) {
-            lastPackagePath = packagePath;
-            packagePath = path.dirname(packagePath);
-        }
+    // add the module name to the paths
+    paths = paths.map(function(basePath) {
+        return path.join(basePath, 'rigger-' + pluginName);
+    });
 
-        plugin = require(path.join(packagePath, 'node_modules', 'rigger-' + pluginName));
-    }
-    catch (projectErr) {
-        // first try an npm require for the plugin
-        try {
-            plugin = require('rigger-' + pluginName);
-        }
-        catch (npmError) {
-            try {
-                plugin = require('./plugins/' + pluginName);
-            }
-            catch (localError) {
-                // not found
-            }
-        }
-    }
+    // and also add the local plugin folder to the search path
+    paths.unshift(path.resolve(__dirname, 'plugins', pluginName + '.js'));
 
-    // if we have a plugin then call it with the temporary scope
-    if (typeof plugin == 'function') {
-        plugin.apply(scope, [this].concat(match.slice(4)));
-    }
-    else {
-        callback(new Error('Unable to find plugin "' + pluginName + '"'));
-    }
+    async.detect(paths, fs.exists || path.exists, function(pluginPath) {
+        if (! pluginPath) return callback(new Error('Could not load plugin: ' + pluginName));
 
-    return plugin;
+        // run the plugin
+        require(pluginPath).apply(scope, [rigger].concat(match.slice(4)));
+    });
 };
 
 Rigger.prototype.set = function(match, settings, callback) {
