@@ -81,17 +81,4 @@ describe('event tests', function() {
             includedFiles.push(file);
         });
     });    
-
-    it('should trigger an alias:invalid error when an alias is invalid', function(done) {
-        var aliasInvalid = false;
-
-        rigger.process('//= test!test', function(err, output) {
-            assert(aliasInvalid, 'alias:invalid not fired');
-            done();
-        })
-        .on('alias:invalid', function(alias) {
-            assert.equal(alias, 'test');
-            aliasInvalid = true;
-        });
-    });
 });

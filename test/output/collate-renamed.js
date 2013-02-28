@@ -1,3 +1,3 @@
-var _alt_resources = {
+var _fred = {
   'test': 'This is some multi line text'
 };

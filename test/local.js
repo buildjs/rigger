@@ -40,12 +40,9 @@ describe('local rigging tests', function() {
     // create a test for each of the input files
     files.forEach(function(file) {
         it('should be able to rig: ' + file, rigAndCompare.bind(null, file));
-
     });
     
-    /*
     it('should be able to rig all local files in parallel', function(done) {
         async.forEach(files, rigAndCompare, done);
     });
-    */
 });
