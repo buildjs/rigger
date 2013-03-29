@@ -440,9 +440,8 @@ Rigger.prototype._fork = function(files, callback) {
 
         function(err, results) {
             // TODO: process child source map and integrate into main sourcemap
-            
             debug('finished subrigging', results);
-            callback(null, (results || []).join(rigger.lineEnding));
+            callback(err, (results || []).join(rigger.lineEnding));
         }
     );
 };
