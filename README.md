@@ -38,7 +38,7 @@ __CSS:__
 /*= includes/test */
 ```
 
-Notice that each of the examples is using single-line comments (even if they are a block comment in the case of the CSS example).  This is important to note as Rigger parses files on a __line by line__ basis rather through through tokenizing.  If you use block comments like the following CSS example, it won't work:
+Notice that each of the examples is using single-line comments (even if they are a block comment in the case of the CSS example).  This is important to note as Rigger parses files on a __line by line__ basis rather than through tokenizing.  If you use block comments like the following CSS example, it won't work:
 
 ```css
 /*=
@@ -116,4 +116,4 @@ To be completed.
 
 One of the simplest ways of composing process flows in node is to use streams, and while Interleave does not support a streaming interface, Rigger inherits from the node [Stream](http://nodejs.org/docs/latest/api/stream.html).
 
-This means that you can do all kinds of things prior to rigging in your inline dependencies and all kinds of things afterwards to.
+This means that you can do all kinds of things prior to rigging in your inline dependencies and all kinds of things afterwards too.
