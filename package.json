@@ -5,7 +5,7 @@
   "tags": [
     "build"
   ],
-  "version": "0.5.2",
+  "version": "0.5.3",
   "bin": {
     "rig": "./bin/rig"
   },
