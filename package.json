@@ -16,7 +16,7 @@
     "async": "0.2.x",
     "buildjs.core": "0.1.x",
     "debug": "*",
-    "getit": "0.2.x",
+    "getit": "0.3.x",
     "underscore": "1.4.x"
   },
   "devDependencies": {

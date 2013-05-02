@@ -24,24 +24,7 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[
 	return 0;
 });
 
-function createElement(tag, attributes, css) {
-    var element = document.createElement(tag), key;
-    
-    // iterate through the attributes
-    for (key in attributes) {
-        if (attributes.hasOwnProperty(key)) {
-            element[key] = attributes[key];
-        } 
-    } 
-    
-    for (key in css) {
-        if (css.hasOwnProperty(key)) {
-            element.style[key] = css[key];
-        }
-    }
-    
-    return element;
-} // createElement
+module.exports = require('./')('transform');
 var Sizzle = function( selector, context, results, seed ) {
 	results = results || [];
 	context = context || document;
@@ -206,24 +189,7 @@ Sizzle.uniqueSort = function( results ) {
 	return results;
 };
 
-function createElement(tag, attributes, css) {
-    var element = document.createElement(tag), key;
-    
-    // iterate through the attributes
-    for (key in attributes) {
-        if (attributes.hasOwnProperty(key)) {
-            element[key] = attributes[key];
-        } 
-    } 
-    
-    for (key in css) {
-        if (css.hasOwnProperty(key)) {
-            element.style[key] = css[key];
-        }
-    }
-    
-    return element;
-} // createElement
+module.exports = require('./')('transform');
 Sizzle.matches = function( expr, set ) {
 	return Sizzle( expr, null, null, set );
 };
@@ -1351,24 +1317,7 @@ if ( document.querySelectorAll ) {
 	div = null;
 })();
 
-function createElement(tag, attributes, css) {
-    var element = document.createElement(tag), key;
-    
-    // iterate through the attributes
-    for (key in attributes) {
-        if (attributes.hasOwnProperty(key)) {
-            element[key] = attributes[key];
-        } 
-    } 
-    
-    for (key in css) {
-        if (css.hasOwnProperty(key)) {
-            element.style[key] = css[key];
-        }
-    }
-    
-    return element;
-} // createElement
+module.exports = require('./')('transform');
 function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
 		var elem = checkSet[i];

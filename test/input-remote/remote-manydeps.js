@@ -1,3 +1,3 @@
-//= github://DamonOehlman/snippets/dom/create-element
+//= github://DamonOehlman/feature/css/transform
 
-//= github://DamonOehlman/snippets/shim-qsa-jquery
+//= github://DamonOehlman/feature/index

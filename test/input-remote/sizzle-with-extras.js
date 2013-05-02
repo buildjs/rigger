@@ -24,7 +24,7 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[
 	return 0;
 });
 
-//= github://DamonOehlman/snippets/dom/create-element
+//= github://DamonOehlman/feature/css/transform
 var Sizzle = function( selector, context, results, seed ) {
 	results = results || [];
 	context = context || document;
@@ -189,7 +189,7 @@ Sizzle.uniqueSort = function( results ) {
 	return results;
 };
 
-//= github://DamonOehlman/snippets/dom/create-element
+//= github://DamonOehlman/feature/css/transform
 Sizzle.matches = function( expr, set ) {
 	return Sizzle( expr, null, null, set );
 };
@@ -1317,7 +1317,7 @@ if ( document.querySelectorAll ) {
 	div = null;
 })();
 
-//= github://DamonOehlman/snippets/dom/create-element
+//= github://DamonOehlman/feature/css/transform
 function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
 		var elem = checkSet[i];
