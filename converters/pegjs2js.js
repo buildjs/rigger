@@ -10,8 +10,9 @@ module.exports = function(input, opts, callback) {
         .on('error', callback)
         .on('ok', function(PEG) {
             // create the parser
-            var parser = PEG.buildParser(input),
-                output = parser.toSource(),
+            var output = PEG.buildParser(input, {
+                    output: 'source'
+                }),
                 basename;
                 
             // if we have a current file that we are converting, then 
