@@ -24,7 +24,8 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[
 	return 0;
 });
 
-module.exports = require('./')('transform');
+function Test() {
+}
 var Sizzle = function( selector, context, results, seed ) {
 	results = results || [];
 	context = context || document;
@@ -189,7 +190,8 @@ Sizzle.uniqueSort = function( results ) {
 	return results;
 };
 
-module.exports = require('./')('transform');
+function Test() {
+}
 Sizzle.matches = function( expr, set ) {
 	return Sizzle( expr, null, null, set );
 };
@@ -1317,7 +1319,8 @@ if ( document.querySelectorAll ) {
 	div = null;
 })();
 
-module.exports = require('./')('transform');
+function Test() {
+}
 function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
 		var elem = checkSet[i];

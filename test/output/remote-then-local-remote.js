@@ -1,3 +1,3 @@
+var a = 10;
 function Test() {
 }
-module.exports = require('./')('transform');

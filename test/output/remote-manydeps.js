@@ -1,3 +1,4 @@
-module.exports = require('./')('transform');
+function Test() {
+}
 
-exports.css = require('./css');
+var a = 10;

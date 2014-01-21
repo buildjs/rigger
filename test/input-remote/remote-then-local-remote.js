@@ -1,2 +1,2 @@
-//= github://buildjs/rigger/test/input/local-singlefile
+//= github://buildjs/rigger/test/includes/simple
 //= remote-github

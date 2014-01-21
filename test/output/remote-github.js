@@ -1,1 +1,2 @@
-module.exports = require('./')('transform');
+function Test() {
+}
