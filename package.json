@@ -1,16 +1,10 @@
 {
   "name": "rigger",
   "description": "Javascript file parser and include engine",
-  "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
-  "tags": [
-    "build"
-  ],
+  "author": "Damon Oehlman <damon.oehlman@gmail.com>",
   "version": "0.5.5",
   "bin": {
     "rig": "./bin/rig"
-  },
-  "engines": {
-    "node": ">= 0.6.x < 0.11.0"
   },
   "dependencies": {
     "async": "0.2.x",
@@ -39,5 +33,15 @@
   "scripts": {
     "test": "node_modules/mocha/bin/mocha"
   },
-  "contributors": []
+  "homepage": "https://github.com/buildjs/rigger",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "build",
+    "include",
+    "transpile"
+  ],
+  "license": "MIT"
 }
