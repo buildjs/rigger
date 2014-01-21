@@ -2,7 +2,7 @@
   "name": "rigger",
   "description": "Javascript file parser and include engine",
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "bin": {
     "rig": "./bin/rig"
   },
