@@ -1,11 +1,9 @@
 language: node_js
 node_js:
-  - 0.6
   - 0.8
   - 0.9
   - 0.10
 
 notifications:
   email:
-    - travis@sidelab.com
-  irc: "irc.freenode.org#sidelab"
+    - damon.oehlman@gmail.com
