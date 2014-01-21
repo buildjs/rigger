@@ -16,18 +16,18 @@
     "async": "0.2.x",
     "buildjs.core": "0.1.x",
     "debug": "*",
-    "getit": "0.3.x",
-    "underscore": "1.4.x"
+    "getit": "~0.4.0",
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
-    "findit": "0.1.x",
-    "mocha": "1.8.x",
+    "findit": "~1.1.0",
+    "mocha": "~1.17.0",
     "mkdirp": "0.3.x",
     "rigger-collate": "0.5.x",
-    "coffee-script": "1.5.0",
-    "stylus": "0.32.1",
-    "nib": "0.9.1",
-    "pegjs": "0.7.x"
+    "coffee-script": "~1.6.3",
+    "stylus": "~0.42.1",
+    "nib": "~1.0.2",
+    "pegjs": "~0.8.0"
   },
   "repository": {
     "type": "git",
