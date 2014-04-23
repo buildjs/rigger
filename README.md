@@ -55,7 +55,7 @@ rig input.js > output.js
 
 ## Include All the Things
 
-Rigger supports a number of special include formats, and these are demonstrated in examples below.  While JS examples are provided, the formats will work in any of the known file formats.
+Rigger supports a number of special include formats, and these are demonstrated in examples below.  While JS examples are provided, the formats will work in any of the known file formats.  In addition, rigger supports recursive (nested) imports, so an imported file can have imports itself, and those imports can have imports, etc.
 
 ### Remote Resources
 
