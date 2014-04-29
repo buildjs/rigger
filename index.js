@@ -61,6 +61,10 @@ function Rigger(opts) {
 
     // initialise the basename from the opts
     this.basename = opts.basename;
+
+    // CHANGED: keep track of the file path being rigged to avoid self-inclusion
+    // initialize the file path from the opts
+    this.filepath = opts.filepath;
     
     // initialise the default file format
     this.filetype = formatters.normalizeExt(opts.filetype || 'js');
@@ -557,6 +561,9 @@ Rigger.prototype._getSingle = function(target, callback) {
                             Object.keys(converters).forEach(function(key) {
                                 valid = valid || key === (ext + '2' + rigger.filetype);
                             });
+
+                            // CHANGED: don't let a file import itself
+                            if (rigger.filepath && (path.join(realTarget, file) === rigger.filepath)) { valid = false; }
 
                             debug('found file: ' + file + ' + valid: ' + valid);
                             return valid;
