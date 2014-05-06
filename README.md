@@ -4,7 +4,7 @@ Rigger is a build time include engine for Javascript, CSS, CoffeeScript and in g
 
 <a href="http://travis-ci.org/#!/buildjs/rigger"><img src="https://secure.travis-ci.org/buildjs/rigger.png" alt="Build Status"></a>
 
-It was created to make the process of creating Javascript libraries a more structured process, but can be used for other tasks also. 
+It was created to make the process of creating Javascript libraries a more structured process, but can be used for other tasks also.
 
 As a developer you are encouraged to write modular, reusable code but when it comes to writing client-side applications your ability to do this effectively is generally hampered by what I call the _single-file principle_.  In most cases a good programmer rages against this and implements some kind of custom `Makefile`, [ant build](http://ant.apache.org/) or [Rakefile](http://rake.rubyforge.org/) to help with their build.
 
@@ -15,6 +15,14 @@ The "build" process, however, generally involves taking a number of files and co
 - The ability to do includes from the web (namely github repos)
 
 This is the functionality that Rigger provides.  It was originally built 6 months ago as part of [Interleave](/DamonOehlman/interleave) but has it's own identity, tests and is generally better.
+
+## PSA: Use Browserify
+
+As a quick note, I think it's important to mention that for just about every project that I'm writing these days I'm using [browserify](https://github.com/substack/node-browserify).  While early versions of browserify didn't do what I wanted, since version 2 onwards it's been fantastic.  So I'd encourage you to take a look at whether browserif solves your needs like it does mine.
+
+If not, then the following tools implement similar functionality to rigger and are more actively maintained:
+
+- https://github.com/timrwood/includer
 
 ## Using Rigger
 
@@ -59,7 +67,7 @@ Rigger supports a number of special include formats, and these are demonstrated 
 
 ### Remote Resources
 
-Remote resources are those stored accessible via HTTP (or HTTPS).  
+Remote resources are those stored accessible via HTTP (or HTTPS).
 
 __HTTP(S) Include:__
 
