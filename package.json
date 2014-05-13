@@ -7,11 +7,11 @@
     "rig": "./bin/rig"
   },
   "dependencies": {
-    "async": "0.2.x",
-    "buildjs.core": "0.1.x",
+    "async": "~0.2",
+    "buildjs.core": "~0.1",
     "debug": "*",
     "getit": "~0.4.0",
-    "underscore": "~1.5.2"
+    "underscore": "^1"
   },
   "devDependencies": {
     "findit": "~1.1.0",
