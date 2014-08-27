@@ -11,7 +11,7 @@
     "buildjs.core": "~0.1",
     "debug": "*",
     "getit": "~0.4.0",
-    "underscore": "^1"
+    "underscore": "~1.6.0"
   },
   "devDependencies": {
     "findit": "^1",
