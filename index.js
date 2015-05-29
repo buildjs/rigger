@@ -272,12 +272,9 @@ Rigger.prototype.include = function(match, settings, callback) {
 
   // initialise the target
   try {
-    target = _.template(
-      templateText,
-      settings, {
-        interpolate : /\{\{(.+?)\}\}/g
-      }
-    );
+    target = _.template(templateText, {
+      interpolate : /\{\{(.+?)\}\}/g
+    })(settings);
   }
   catch (e) {
     return callback(new Error('Unable to expand variables in include "' + templateText + '"'));
