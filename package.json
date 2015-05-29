@@ -7,21 +7,21 @@
     "rig": "./bin/rig"
   },
   "dependencies": {
-    "async": "~0.2",
+    "async": "^1.0.0",
     "buildjs.core": "~0.1",
     "debug": "*",
-    "getit": "~0.4.0",
-    "underscore": "~1.6.0"
+    "getit": "^1.0.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "findit": "^1",
-    "mocha": "^1",
-    "mkdirp": "~0.5",
-    "rigger-collate": "0.5.x",
     "coffee-script": "^1",
-    "stylus": "~0.45",
+    "findit": "^2.0.0",
+    "mkdirp": "~0.5",
+    "mocha": "^2.2.5",
     "nib": "^1",
-    "pegjs": "~0.8"
+    "pegjs": "~0.8",
+    "rigger-collate": "0.5.x",
+    "stylus": "^0.51.1"
   },
   "repository": {
     "type": "git",
