@@ -2,6 +2,8 @@
 
 Rigger is a build time include engine for Javascript, CSS, CoffeeScript and in general any type of text file that you wish to might want to "include" other files into.
 
+[![NPM](https://nodei.co/npm/rigger.png)](https://nodei.co/npm/rigger/)]
+
 <a href="http://travis-ci.org/#!/buildjs/rigger"><img src="https://secure.travis-ci.org/buildjs/rigger.png" alt="Build Status"></a>
 
 It was created to make the process of creating Javascript libraries a more structured process, but can be used for other tasks also.
@@ -130,7 +132,7 @@ This means that you can do all kinds of things prior to rigging in your inline d
 
 ### MIT
 
-Copyright (c) 2013 Damon Oehlman <damon.oehlman@gmail.com>
+Copyright (c) 2013-2015 Damon Oehlman <damon.oehlman@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
