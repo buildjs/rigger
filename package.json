@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "async": "^1.0.0",
-    "buildjs.core": "~0.1",
+    "buildjs.core": "^1.0.0",
     "debug": "*",
     "getit": "^1.0.0",
     "underscore": "^1.8.3"
