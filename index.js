@@ -25,6 +25,7 @@ var concatenators = {
 // additional comment lines
 var defaultCommentSyntax = { pre: '//' };
 var commentTypes = {
+  html:    { pre: '<!--', post: '-->' },
   css:     { pre: '/*', post: '*/' },
   coffee:  { pre: '#' }
 };
