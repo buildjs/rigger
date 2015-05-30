@@ -16,7 +16,7 @@ The "build" process, however, generally involves taking a number of files and co
 - The ability to reuse code from other libraries.
 - The ability to do includes from the web (namely github repos)
 
-This is the functionality that Rigger provides.  It was originally built 6 months ago as part of [Interleave](/DamonOehlman/interleave) but has it's own identity, tests and is generally better.
+This is the functionality that Rigger provides.  It was originally built as part of [Interleave](/DamonOehlman/interleave) but now has it's own identity, tests and is generally better.
 
 ## PSA: Use Browserify
 
