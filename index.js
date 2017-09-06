@@ -523,7 +523,7 @@ Rigger.prototype._getSingle = function(target, callback) {
     });
 
     // find the first of the targets that actually exists
-    async.detect(testTargets, fs.exists, function(realTarget) {
+    async.detect(testTargets, checkExists, function(realTarget) {
       if (! realTarget) {
         // if the rigger is tolerant, emit the include:error event
         if (tolerant) {
@@ -730,4 +730,10 @@ function _attachCallback(rigger, opts, callback) {
       }
     });
   }
+}
+
+function checkExists(filename, callback) {
+    fs.exists(filename, function(exists) {
+        callback(exists && filename);
+    });
 }
