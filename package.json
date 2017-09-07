@@ -21,7 +21,7 @@
     "mocha": "^3.5.0",
     "nib": "^1",
     "pegjs": "^0.10.0",
-    "rigger-collate": "0.5.x",
+    "rigger-collate": "^1.0.0",
     "stylus": "^0.54.5"
   },
   "repository": {
