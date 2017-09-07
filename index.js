@@ -11,6 +11,7 @@ var regexes = require('buildjs.core/regexes');
 var formatters = require('buildjs.core/formatters');
 var platform = require('buildjs.core/platform');
 var _ = require('underscore');
+var allowUnsafeNewFunction = require('loophole').allowUnsafeNewFunction;
 
 // initialise the default converters
 var converters = {};
@@ -273,9 +274,11 @@ Rigger.prototype.include = function(match, settings, callback) {
 
   // initialise the target
   try {
-    target = _.template(templateText, {
-      interpolate : /\{\{(.+?)\}\}/g
-    })(settings);
+    target = allowUnsafeNewFunction(function() {
+      return _.template(templateText, {
+        interpolate : /\{\{(.+?)\}\}/g
+      })(settings);
+    });
   }
   catch (e) {
     return callback(new Error('Unable to expand variables in include "' + templateText + '"'));
