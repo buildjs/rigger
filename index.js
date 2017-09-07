@@ -312,8 +312,10 @@ Rigger.prototype.plugin = function(match, settings, callback) {
   // and also add the local plugin folder to the search path
   paths.unshift(path.resolve(__dirname, 'plugins', pluginName + '.js'));
 
-  async.detect(paths, fs.exists || path.exists, function(pluginPath) {
-    if (! pluginPath) return callback(new Error('Could not load plugin: ' + pluginName));
+  async.detect(paths, checkExists, function(pluginPath) {
+    if (! pluginPath) {
+        return callback(new Error('Could not load plugin: ' + pluginName));
+    }
 
     // run the plugin
     require(pluginPath).apply(scope, [rigger].concat(match.slice(4)));
@@ -523,7 +525,7 @@ Rigger.prototype._getSingle = function(target, callback) {
     });
 
     // find the first of the targets that actually exists
-    async.detect(testTargets, fs.exists, function(realTarget) {
+    async.detect(testTargets, checkExists, function(realTarget) {
       if (! realTarget) {
         // if the rigger is tolerant, emit the include:error event
         if (tolerant) {
@@ -730,4 +732,10 @@ function _attachCallback(rigger, opts, callback) {
       }
     });
   }
+}
+
+function checkExists(filename, callback) {
+    fs.exists(filename, function(exists) {
+        callback(exists && filename);
+    });
 }

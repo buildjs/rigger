@@ -8,21 +8,21 @@
     "rigger": "./bin/rig"
   },
   "dependencies": {
-    "async": "^1.0.0",
+    "async": "^2.5.0",
     "buildjs.core": "^1.0.0",
-    "debug": "*",
+    "debug": "^3.0.1",
     "getit": "^1.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "coffee-script": "1.9.3",
+    "coffee-script": "^1.12.7",
     "findit": "^2.0.0",
     "mkdirp": "~0.5",
-    "mocha": "^2.2.5",
+    "mocha": "^3.5.0",
     "nib": "^1",
-    "pegjs": "~0.8",
-    "rigger-collate": "0.5.x",
-    "stylus": "0.51.1"
+    "pegjs": "^0.10.0",
+    "rigger-collate": "^1.0.0",
+    "stylus": "^0.54.5"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
     "url": "http://github.com/buildjs/rigger/issues"
   },
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha"
+    "test": "mocha"
   },
   "homepage": "https://github.com/buildjs/rigger",
   "main": "index.js",
