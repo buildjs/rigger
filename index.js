@@ -300,9 +300,11 @@ Rigger.prototype.plugin = function(match, settings, callback) {
     done: callback
   };
 
+  var basePaths = ['.'].concat(mod._nodeModulePaths('.'), mod.globalPaths);
+
   var paths = mod._nodeModulePaths(this.cwd)
                 .concat(mod._nodeModulePaths(this.csd))
-                .concat(mod._resolveLookupPaths(this.cwd)[1]);
+                .concat(basePaths);
 
   // add the module name to the paths
   paths = paths.map(function(basePath) {
