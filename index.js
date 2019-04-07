@@ -191,7 +191,7 @@ Rigger.prototype.end = function() {
         }
         else {
           // emit a buffer for the parsed lines
-          rigger.emit('data', new Buffer(content));
+          rigger.emit('data', Buffer.from ? Buffer.from(content) : new Buffer(content));
           rigger.emit('end');
         }
       });
