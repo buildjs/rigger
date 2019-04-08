@@ -191,7 +191,7 @@ Rigger.prototype.end = function() {
         }
         else {
           // emit a buffer for the parsed lines
-          rigger.emit('data', new Buffer(content));
+          rigger.emit('data', Buffer.from ? Buffer.from(content) : new Buffer(content));
           rigger.emit('end');
         }
       });
@@ -262,10 +262,8 @@ Rigger.prototype.write = function(data, all) {
 /* core action handlers */
 
 Rigger.prototype.include = function(match, settings, callback) {
-  var rigger = this;
   var target;
   var targetExt;
-  var conversion;
 
   var templateText = match[3]
                       .replace(regexes.trailingDot, '')
@@ -295,14 +293,15 @@ Rigger.prototype.include = function(match, settings, callback) {
 Rigger.prototype.plugin = function(match, settings, callback) {
   var rigger = this;
   var pluginName = match[3];
-  var plugin;
   var scope = {
     done: callback
   };
 
+  var basePaths = ['.'].concat(mod._nodeModulePaths('.'), mod.globalPaths);
+
   var paths = mod._nodeModulePaths(this.cwd)
                 .concat(mod._nodeModulePaths(this.csd))
-                .concat(mod._resolveLookupPaths(this.cwd)[1]);
+                .concat(basePaths);
 
   // add the module name to the paths
   paths = paths.map(function(basePath) {
