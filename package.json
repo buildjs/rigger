@@ -12,7 +12,8 @@
     "buildjs.core": "^1.0.0",
     "debug": "^4.1.1",
     "getit": "^1.0.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "coffee-script": "^1.12.7",
@@ -32,7 +33,9 @@
     "url": "http://github.com/buildjs/rigger/issues"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "homepage": "https://github.com/buildjs/rigger",
   "main": "index.js",
@@ -44,5 +47,6 @@
     "include",
     "transpile"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "snyk": true
 }
