@@ -12,7 +12,7 @@
     "buildjs.core": "^1.0.0",
     "debug": "^4.1.1",
     "getit": "^1.0.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "coffee-script": "^1.12.7",
