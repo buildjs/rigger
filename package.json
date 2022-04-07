@@ -8,7 +8,7 @@
     "rigger": "./bin/rig"
   },
   "dependencies": {
-    "async": "^2.6.2",
+    "async": "^3.2.2",
     "buildjs.core": "^1.0.0",
     "debug": "^4.1.1",
     "getit": "^1.0.0",
